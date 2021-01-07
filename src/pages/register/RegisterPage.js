@@ -8,7 +8,6 @@ import RESTConstans from "../../utiels/constans/RESTConstans";
 export default function RegisterPage() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const classes = useStyles();
 
   const register = async () => {
     console.log(userName, password);

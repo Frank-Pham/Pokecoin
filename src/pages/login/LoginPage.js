@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import { Button, Grid } from "@material-ui/core";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../../context/user/UserContext";
 
 export default function LoginPage() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const { token, setToken } = useContext(UserContext);
   const history = useHistory();
 
   const login = async () => {
@@ -26,8 +28,13 @@ export default function LoginPage() {
 
     console.log("response", response);
     if (response.token) {
+      setToken(response.token);
       history.push("/main"); //hängt an aktuelle UL drann
     }
+  };
+
+  const goToRegister = () => {
+    history.push("/register");
   };
 
   return (
@@ -46,6 +53,9 @@ export default function LoginPage() {
       />
       <Button variant="contained" color="primary" onClick={login}>
         Anmelden
+      </Button>
+      <Button variant="contained" color="primary" onClick={goToRegister}>
+        Haben Sie noch keinen Account?
       </Button>
     </Grid>
   );
