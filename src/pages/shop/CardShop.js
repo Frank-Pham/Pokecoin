@@ -4,6 +4,7 @@ import react, { useContext, useEffect, useState } from "react";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
+import CardPackage from "../../models/CardPackage"
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -22,6 +23,9 @@ export default function CardShop() {
   const base = packs[0];
   const deluxe = packs[1];
   const platin = packs[2];
+
+  const basePack = new CardPackage(base, 5, [], 1, 10);
+  basePack.fetchCards(token);
 
   useEffect(() => {
     fetchPackages();
@@ -60,7 +64,7 @@ export default function CardShop() {
         .get(url,
             {
               headers: {
-                token: token,
+                token: token
               }
             })
         .then(response => response.data)
