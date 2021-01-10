@@ -37,6 +37,10 @@ export default function LoginPage() {
     history.push("/register");
   };
 
+  const register = async () => {
+      history.push("/register");
+  };
+
   return (
     <Grid container direction="column">
       <TextField
@@ -53,6 +57,9 @@ export default function LoginPage() {
       />
       <Button variant="contained" color="primary" onClick={login}>
         Anmelden
+      </Button>
+      <Button variant="contained" color="primary" onClick={register}>
+        Registrieren
       </Button>
       <Button variant="contained" color="primary" onClick={goToRegister}>
         Haben Sie noch keinen Account?

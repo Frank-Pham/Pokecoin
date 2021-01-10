@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import react, { useContext, useEffect, useState } from "react";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -18,22 +19,24 @@ const useStyles = makeStyles((theme) => ({
 export default function CardShop() {
   const { token } = useContext(UserContext);
   const [packs, setPacks] = useState([]);
+  const base = packs[0];
+  const deluxe = packs[1];
+  const platin = packs[2];
 
   useEffect(() => {
     fetchPackages();
   }, []);
 
   async function fetchPackages() {
-    const testpackArray = ["Base", "Fire", "Water"];
     const packArray = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.PACKAGES
     );
+    setPacks(packs => ["base", "deluxe", "platin"]);
     console.log("Die Pack-Auswahl" + packArray);
-
-    for (const pack of testpackArray) {
-      setPacks((packs) => [...packs, pack]);
+    for(const pack of packs){
+      console.log(pack);
     }
-    console.log(packs);
+
   }
 
   /**
@@ -42,7 +45,7 @@ export default function CardShop() {
    * @param {*} url
    */
   async function fetchData(url) {
-    const response = await fetch(url, {
+    /*const response = await fetch(url, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -51,12 +54,24 @@ export default function CardShop() {
       },
     }).then((response) => response.json());
 
+    return response;*/
+
+    const response = await axios
+        .get(url,
+            {
+              headers: {
+                token: token,
+              }
+            })
+        .then(response => response.data)
     return response;
+
   }
 
   return (
-    <Grid container spacing={3}>
+    <Grid>
       <Paper>Welcome to the PokeShop</Paper>
+      <h1>{base} {deluxe} {platin}</h1>
     </Grid>
   );
 }
