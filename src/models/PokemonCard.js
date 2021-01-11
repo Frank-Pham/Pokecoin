@@ -5,6 +5,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import { Avatar, CardHeader, IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -18,19 +19,27 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PokemonCard({ name }) {
+export default function PokemonCard({ Pokemonname }) {
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
+      <CardHeader
+        avatar={
+          <Avatar aria-label="recipe" className={classes.avatar}>
+            R
+          </Avatar>
+        }
+        action={<IconButton aria-label="settings"></IconButton>}
+        title={Pokemonname}
+        subheader="September 14, 2016"
+      />
       <CardContent>
         <Typography
           className={classes.title}
           color="textSecondary"
           gutterBottom
-        >
-          <h1>{name}</h1>
-        </Typography>
+        ></Typography>
 
         <Typography className={classes.pos} color="textSecondary">
           adjective

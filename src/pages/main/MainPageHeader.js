@@ -20,17 +20,17 @@ export default function MainPageHeader({ user }) {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Grid container classname={classes.grid} direction="row">
+        <Grid container className={classes.grid} direction="row">
           <Grid item xs={1} />
           <Grid item xs={8}>
-            <Typography classname={classes.typographyCSS}>
+            <Typography className={classes.typographyCSS}>
               MiningStation
             </Typography>
           </Grid>
 
           <Grid item container xs={3}>
             <AccountCircleIcon />
-            <Typography classname={classes.typographyCSS}>
+            <Typography className={classes.typographyCSS}>
               {user.userName} - PokeCoins({user.coins})
             </Typography>
           </Grid>
