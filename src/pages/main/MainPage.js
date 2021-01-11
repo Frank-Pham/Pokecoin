@@ -1,15 +1,16 @@
 import * as crypto from "crypto";
-
+import Button from "@material-ui/core/Button";
+import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 
-import Button from "@material-ui/core/Button";
 /* eslint-disable import/no-webpack-loader-syntax */
 import DefaultWorker from "worker-loader!../../workers/blockWorker.js";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
-import RESTConstans from "../../utiels/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import { useHistory } from "react-router-dom";
+import PokemonList from "../../models/PokemonList";
+import RESTConstans from "../../utiels/constans/RESTConstans";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -28,6 +29,7 @@ export default function MainPage() {
   const [coins, setCoins] = useState(0);
   const [worker, setWorker] = useState();
   const [difficulty, setDifficulty] = useState();
+  const [pokemon, setPokemon] = useState([]);
   const history = useHistory();
 
   //######################## UI - ELEMENTE ############################################
@@ -43,6 +45,7 @@ export default function MainPage() {
     fetchCoins();
     fetchDifficulty();
     initBlockWorker();
+    fetchCards();
   }, []);
 
   //###################################################################################
@@ -118,6 +121,12 @@ export default function MainPage() {
     setUserName(response.username);
   }
 
+  async function fetchCards() {
+    const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.CARDS);
+    console.log("fecht cards response", response);
+    setPokemon(response.cards.map((poke) => poke.name));
+  }
+
   async function fetchDifficulty() {
     const response = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.DIFFICULTY
@@ -182,6 +191,10 @@ export default function MainPage() {
 
       <Grid item xs={3}>
         {userName} - Pokecoins ({coins})
+      </Grid>
+
+      <Grid item xs={12}>
+        <PokemonList pokemon={pokemon}></PokemonList>
       </Grid>
     </Grid>
   );
