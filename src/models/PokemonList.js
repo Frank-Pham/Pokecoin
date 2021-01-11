@@ -1,5 +1,6 @@
 import { Grid, Paper, makeStyles } from "@material-ui/core";
 import React from "react";
+import PokemonCard from "./PokemonCard";
 
 export default function PokemonList({ pokemon }) {
   const useStyles = makeStyles((theme) => ({
@@ -22,9 +23,15 @@ export default function PokemonList({ pokemon }) {
       <Grid item container>
         <Grid item xs={2} />
         <Grid item xs={8}>
-          {pokemon.map((p) => (
-            <Paper key={p}>{p}</Paper>
-          ))}
+          <Grid item container>
+            {pokemon.map((p) => (
+              <Grid item xs={4}>
+                <PokemonCard name={p} key={p}>
+                  {p}
+                </PokemonCard>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
         <Grid item xs={2} />
       </Grid>
