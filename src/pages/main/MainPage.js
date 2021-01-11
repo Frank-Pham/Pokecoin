@@ -11,6 +11,7 @@ import { UserContext } from "../../context/user/UserContext";
 import { useHistory } from "react-router-dom";
 import PokemonList from "../../models/PokemonList";
 import RESTConstans from "../../utiels/constans/RESTConstans";
+import MainPageHeader from "./MainPageHeader";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -174,9 +175,7 @@ export default function MainPage() {
 
   return (
     <Grid container spacing={3} className={classes.grid}>
-      <Grid item xs={12}>
-        <Paper className={classes.paper}>Mining Station</Paper>
-      </Grid>
+      <MainPageHeader user={{ userName: userName, coins: coins }} />
 
       <Grid item xs={9}>
         <Paper className={classes.paper}>
@@ -187,10 +186,6 @@ export default function MainPage() {
             CardShop
           </Button>
         </Paper>
-      </Grid>
-
-      <Grid item xs={3}>
-        {userName} - Pokecoins ({coins})
       </Grid>
 
       <Grid item xs={12}>
