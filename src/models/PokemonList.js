@@ -30,7 +30,7 @@ export default function PokemonList({ pokemon }) {
           <Grid item container>
             {pokemon.map((p) => (
               <Grid item xs={4} key={p.name}>
-                <PokemonCard Pokemonname={p.name} />
+                <PokemonCard Pokemondetails={p} />
               </Grid>
             ))}
           </Grid>

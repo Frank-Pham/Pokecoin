@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PokemonCard({ Pokemonname }) {
+export default function PokemonCard({ Pokemondetails }) {
   const classes = useStyles();
 
   return (
@@ -31,8 +31,8 @@ export default function PokemonCard({ Pokemonname }) {
           </Avatar>
         }
         action={<IconButton aria-label="settings"></IconButton>}
-        title={Pokemonname}
-        subheader="September 14, 2016"
+        title={Pokemondetails.name}
+        subheader={Pokemondetails.subtype}
       />
       <CardContent>
         <Typography
