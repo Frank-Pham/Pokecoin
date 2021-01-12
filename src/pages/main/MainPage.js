@@ -124,8 +124,9 @@ export default function MainPage() {
 
   async function fetchCards() {
     const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.CARDS);
-    console.log("fecht cards response", response);
-    setPokemon(response.cards.map((poke) => poke.name));
+    console.log(response.cards.map((poke) => poke));
+    setPokemon([...response.cards]);
+    console.log("Whats in the PokemonArray", pokemon);
   }
 
   async function fetchDifficulty() {

@@ -18,6 +18,10 @@ export default function PokemonList({ pokemon }) {
     },
   }));
   const classes = useStyles();
+  console.log(
+    "pokemon-PROBS=",
+    pokemon.map((p) => p.name)
+  );
   return (
     <Grid container direction={"column"} spacing={3} className={classes.grid}>
       <Grid item container>
@@ -25,8 +29,8 @@ export default function PokemonList({ pokemon }) {
         <Grid item xs={8}>
           <Grid item container>
             {pokemon.map((p) => (
-              <Grid item xs={4} key={p}>
-                <PokemonCard Pokemonname={p} />
+              <Grid item xs={4} key={p.name}>
+                <PokemonCard Pokemonname={p.name} />
               </Grid>
             ))}
           </Grid>
