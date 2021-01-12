@@ -4,9 +4,15 @@ import react, { useContext, useEffect, useState } from "react";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
-import CardPackage from "../../models/CardPackage"
+import CardPackage from "../../models/CardPackage";
 import CardShopHeader from "./CardShopHeader";
 import React from "react";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import PokemonPack from "../../assets/images/PokemonPack.jpg";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -17,16 +23,28 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
   },
+
+  image: {
+    width: 160,
+    height: 239,
+  },
+
+  img: {
+    marginBottom: "25px",
+    display: "block",
+    maxWidth: "100%",
+    maxHeight: "100%",
+  },
 }));
 
 export default function CardShop() {
+  const classes = useStyles();
   const { token } = useContext(UserContext);
   const [packs, setPacks] = useState([]);
   const [userName, setUserName] = useState("");
   const [coins, setCoins] = useState(0);
+  const [packAmount, setPackAmount] = useState(0);
   const base = packs[0];
-  const deluxe = packs[1];
-  const platin = packs[2];
 
   const basePack = new CardPackage(base, 5, [], 1, 10);
   basePack.fetchCards(token);
@@ -41,12 +59,11 @@ export default function CardShop() {
     const packArray = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.PACKAGES
     );
-    setPacks(packs => ["base", "deluxe", "platin"]);
+    setPacks((packs) => ["base"]);
     console.log("Die Pack-Auswahl" + packArray);
-    for(const pack of packs){
+    for (const pack of packs) {
       console.log(pack);
     }
-
   }
   async function fetchCoins() {
     const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.COINS);
@@ -64,33 +81,40 @@ export default function CardShop() {
    * @param {*} url
    */
   async function fetchData(url) {
-    /*const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: token,
-      },
-    }).then((response) => response.json());
-
-    return response;*/
-
     const response = await axios
-        .get(url,
-            {
-              headers: {
-                token: token
-              }
-            })
-        .then(response => response.data)
+      .get(url, {
+        headers: {
+          token: token,
+        },
+      })
+      .then((response) => response.data);
     return response;
-
   }
 
   return (
-    <Grid>
-      <CardShopHeader  user={{ userName: userName, coins: coins }} />
-      <h1>{base} {deluxe} {platin}</h1>
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+    >
+      <CardShopHeader user={{ userName: userName, coins: coins }} />
+      <h1>{base} Packung</h1>
+      <ButtonBase className={classes.image}>
+        <img className={classes.img} alt="complex" src={PokemonPack} />
+      </ButtonBase>
+      <div>
+        <ButtonGroup color="primary" aria-label="outlined primary button group">
+          <Button onClick={() => packAmount > 0 ? setPackAmount(packAmount-1) : console.log("Anzahl der Packs ist auf 0!")}>
+            <RemoveCircleIcon />
+          </Button>
+          <Button disabled>{packAmount}</Button>
+          <Button onClick={() => setPackAmount(packAmount+1)}>
+            <AddCircleIcon />
+          </Button>
+        </ButtonGroup>
+      </div>
+      <Button variant="contained" color="primary">Kaufen</Button>
     </Grid>
   );
 }
