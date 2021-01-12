@@ -5,6 +5,8 @@ import RESTConstans from "../../utiels/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import CardPackage from "../../models/CardPackage"
+import CardShopHeader from "./CardShopHeader";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -20,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
 export default function CardShop() {
   const { token } = useContext(UserContext);
   const [packs, setPacks] = useState([]);
+  const [userName, setUserName] = useState("");
+  const [coins, setCoins] = useState(0);
   const base = packs[0];
   const deluxe = packs[1];
   const platin = packs[2];
@@ -29,6 +33,8 @@ export default function CardShop() {
 
   useEffect(() => {
     fetchPackages();
+    fetchCoins();
+    fetchUserName();
   }, []);
 
   async function fetchPackages() {
@@ -41,6 +47,15 @@ export default function CardShop() {
       console.log(pack);
     }
 
+  }
+  async function fetchCoins() {
+    const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.COINS);
+    setCoins(response.amount);
+  }
+
+  async function fetchUserName() {
+    const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.ME);
+    setUserName(response.username);
   }
 
   /**
@@ -74,7 +89,7 @@ export default function CardShop() {
 
   return (
     <Grid>
-      <Paper>Welcome to the PokeShop</Paper>
+      <CardShopHeader  user={{ userName: userName, coins: coins }} />
       <h1>{base} {deluxe} {platin}</h1>
     </Grid>
   );
