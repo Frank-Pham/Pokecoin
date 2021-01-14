@@ -1,40 +1,70 @@
 import React, { useState, useContext } from "react";
-import TextField from "@material-ui/core/TextField";
-import { Button, Grid } from "@material-ui/core";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import {
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  FilledInput,
+  TextField,
+  FormControl,
+} from "@material-ui/core";
+import { Visibility, VisibilityOff, ViewColumn } from "@material-ui/icons";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/user/UserContext";
-import {red} from "@material-ui/core/colors";
+import { red } from "@material-ui/core/colors";
+import axios from "axios";
+
+const useStyles = makeStyles((theme) => {
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: "center",
+      color: theme.palette.text.secondary,
+    },
+    input: {
+      "&MuiTextField-root": {
+        margin: theme.spacing(10),
+        width: "50ch",
+      },
+    },
+  });
+});
 
 export default function LoginPage() {
+  const classes = useStyles();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const { token, setToken } = useContext(UserContext);
   const history = useHistory();
   const [error, setError] = useState("");
+
   const login = async () => {
     console.log(userName, password);
     const data = {
       username: userName,
       password: password,
-      valid: ""
+      valid: "",
     };
     console.log(data);
-    const response = await fetch(RESTConstans.DOMAIN + RESTConstans.LOGIN, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
-    if(!response.token){
-        setError(error + "Loginname and/or password is wrong, please try again!");
-    }
-    console.log("response", response);
-    if (response.token) {
-      setToken(response.token);
-      history.push("/main"); //hängt an aktuelle UL drann
-    }
+    await axios
+      .post(RESTConstans.DOMAIN + RESTConstans.LOGIN, {
+        username: data.username,
+        password: data.password,
+      })
+      .then(function (response) {
+        setToken(response.data.token);
+        history.push("/main"); //hängt an aktuelle UL drann
+      })
+      .catch((error) =>
+        setError("Loginname and/or password is wrong, please try again!")
+      );
   };
 
   const goToRegister = () => {
@@ -47,18 +77,32 @@ export default function LoginPage() {
 
   return (
     <Grid container direction="column">
+      <h1>Pokecoin-Login 🪙</h1>
       <TextField
         id="forName"
-        label="Filled"
+        label="Username"
         variant="filled"
         onChange={(event) => setUserName(event.target.value)}
       />
-      <TextField
-        id="forPassword"
-        label="Filled"
-        variant="filled"
-        onChange={(event) => setPassword(event.target.value)}
-      />
+      <FormControl variant="filled">
+        <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
+        <FilledInput
+          id="filled-adornment-password"
+          label="Password"
+          type={showPassword ? "text" : "password"}
+          onChange={(event) => setPassword(event.target.value)}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
       <Button variant="contained" color="primary" onClick={login}>
         Anmelden
       </Button>
@@ -68,9 +112,7 @@ export default function LoginPage() {
       <Button variant="contained" color="primary" onClick={goToRegister}>
         Haben Sie noch keinen Account?
       </Button>
-        <p color="red">
-            {error}
-        </p>
+      <p color="red">{error}</p>
     </Grid>
   );
 }
