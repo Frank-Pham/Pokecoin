@@ -4,18 +4,20 @@ import { Button, Grid } from "@material-ui/core";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/user/UserContext";
+import {red} from "@material-ui/core/colors";
 
 export default function LoginPage() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const { token, setToken } = useContext(UserContext);
   const history = useHistory();
-
+  const [error, setError] = useState("");
   const login = async () => {
     console.log(userName, password);
     const data = {
       username: userName,
       password: password,
+      valid: ""
     };
     console.log(data);
     const response = await fetch(RESTConstans.DOMAIN + RESTConstans.LOGIN, {
@@ -25,7 +27,9 @@ export default function LoginPage() {
         "Content-Type": "application/json",
       },
     }).then((response) => response.json());
-
+    if(!response.token){
+        setError(error + "Loginname and/or password is wrong, please try again!");
+    }
     console.log("response", response);
     if (response.token) {
       setToken(response.token);
@@ -38,7 +42,7 @@ export default function LoginPage() {
   };
 
   const register = async () => {
-      history.push("/register");
+    history.push("/register");
   };
 
   return (
@@ -64,6 +68,9 @@ export default function LoginPage() {
       <Button variant="contained" color="primary" onClick={goToRegister}>
         Haben Sie noch keinen Account?
       </Button>
+        <p color="red">
+            {error}
+        </p>
     </Grid>
   );
 }
