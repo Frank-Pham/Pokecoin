@@ -5,7 +5,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { Avatar, CardHeader, IconButton } from "@material-ui/core";
+import { Avatar, CardHeader, CardMedia, IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -16,6 +16,10 @@ const useStyles = makeStyles({
   },
   pos: {
     marginBottom: 12,
+  },
+  media: {
+    paddingTop: "80%",
+    paddingBottom: "50%",
   },
 });
 
@@ -35,19 +39,8 @@ export default function PokemonCard({ Pokemondetails }) {
         subheader={Pokemondetails.subtype}
       />
       <CardContent>
-        <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
-        ></Typography>
-
-        <Typography className={classes.pos} color="textSecondary">
-          adjective
-        </Typography>
+        <CardMedia className={classes.media} image={Pokemondetails.imageUrl} />
       </CardContent>
-      <CardActions>
-        <Button size="small">More Details</Button>
-      </CardActions>
     </Card>
   );
 }
