@@ -8,7 +8,8 @@ const RESTConstans = {
   BLOCKS: "/blockchain/blocks",
   DIFFICULTY: "/blockchain/currentDifficulty",
   PACKAGES: "/cards/packages",
-  CARDS: "/cards"
+  CARDS: "/cards",
+  DEFAULT_PACK: "/buyDefaultPackage",
 };
 
 export default RESTConstans;

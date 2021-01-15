@@ -75,6 +75,14 @@ export default function CardShop() {
     setUserName(response.username);
   }
 
+  const buyPack = async() => {
+    await axios.get(RESTConstans.DOMAIN + RESTConstans.PACKAGES + "/Base" + RESTConstans.DEFAULT_PACK,{
+      headers:{
+        token: token
+      }
+    }).then((response) => console.log(response.data)).catch((error) => console.log(error))
+  }
+
   /**
    * fetchen ausgelagert
    *
@@ -114,7 +122,7 @@ export default function CardShop() {
           </Button>
         </ButtonGroup>
       </div>
-      <Button variant="contained" color="primary">Kaufen</Button>
+      <Button variant="contained" color="primary" onClick={buyPack}>Kaufen</Button>
     </Grid>
   );
 }
