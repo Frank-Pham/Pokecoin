@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CardShop() {
   const classes = useStyles();
   const { token } = useContext(UserContext);
+  const { user,setUser } = useContext(UserContext);
   const [packs, setPacks] = useState([]);
   const [userName, setUserName] = useState("");
   const [coins, setCoins] = useState(0);
@@ -73,6 +74,7 @@ export default function CardShop() {
   async function fetchUserName() {
     const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.ME);
     setUserName(response.username);
+    setUser(response.username);
   }
 
   const buyPack = async() => {

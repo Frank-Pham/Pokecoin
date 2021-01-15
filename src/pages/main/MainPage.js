@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainPage() {
   const { token } = useContext(UserContext);
+  const { coins, setCoins } = useContext(UserContext);
   const [userName, setUserName] = useState("");
-  const [coins, setCoins] = useState(0);
   const [worker, setWorker] = useState();
   const [difficulty, setDifficulty] = useState();
   const [pokemon, setPokemon] = useState([]);
@@ -57,6 +57,10 @@ export default function MainPage() {
 
   const goToShop = () => {
     history.push("/cardShop"); //hängt an aktuelle UL drann
+  };
+
+  const goToCollection = () => {
+    history.push("/cardCollection");
   };
 
   async function collectInfoForBlock() {
@@ -185,6 +189,9 @@ export default function MainPage() {
           </Button>
           <Button variant="contained" color="primary" onClick={goToShop}>
             CardShop
+          </Button>
+          <Button variant="contained" color="primary" onClick={goToCollection}>
+            Card-Collection
           </Button>
         </Paper>
       </Grid>

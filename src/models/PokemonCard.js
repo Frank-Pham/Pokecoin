@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   media: {
-    paddingTop: "80%",
+    paddingTop: "100%",
     paddingBottom: "50%",
   },
 });

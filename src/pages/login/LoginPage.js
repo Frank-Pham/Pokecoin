@@ -59,6 +59,7 @@ export default function LoginPage() {
         password: data.password,
       })
       .then(function (response) {
+        console.log(response.data)
         setToken(response.data.token);
         history.push("/main"); //hängt an aktuelle UL drann
       })
