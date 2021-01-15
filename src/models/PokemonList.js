@@ -18,6 +18,7 @@ export default function PokemonList({ pokemon }) {
     },
   }));
   const classes = useStyles();
+  console.log("WAS IST IN DER PROMP ", pokemon);
   console.log(
     "pokemon-PROBS=",
     pokemon.map((p) => p.name)
