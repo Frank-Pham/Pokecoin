@@ -8,15 +8,16 @@ import DefaultWorker from "worker-loader!../../workers/blockWorker.js";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
-import { useHistory } from "react-router-dom";
 import PokemonList from "../../models/PokemonList";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import MainPageHeader from "./MainPageHeader";
+import Navbar from "../../navbar/Navbar";
+import PageNames from "../../utiels/constans/PageNameConstants";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
     width: "100%",
-    margin: "0px",
+    marginTop: theme.spacing(7),
   },
   paper: {
     padding: theme.spacing(2),
@@ -25,13 +26,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MainPage() {
-  const { token } = useContext(UserContext);
-  const { coins, setCoins } = useContext(UserContext);
-  const [userName, setUserName] = useState("");
+  const { userCreds, setUserCreds } = useContext(UserContext);
   const [worker, setWorker] = useState();
   const [difficulty, setDifficulty] = useState();
   const [pokemon, setPokemon] = useState([]);
-  const history = useHistory();
 
   //######################## UI - ELEMENTE ############################################
 
@@ -42,7 +40,6 @@ export default function MainPage() {
    * UI-Element Username
    */
   useEffect(() => {
-    fetchUserName();
     fetchCoins();
     fetchDifficulty();
     initBlockWorker();
@@ -53,14 +50,6 @@ export default function MainPage() {
 
   const mineCoins = () => {
     collectInfoForBlock();
-  };
-
-  const goToShop = () => {
-    history.push("/cardShop"); //hängt an aktuelle UL drann
-  };
-
-  const goToCollection = () => {
-    history.push("/cardCollection");
   };
 
   async function collectInfoForBlock() {
@@ -116,14 +105,7 @@ export default function MainPage() {
    */
   async function fetchCoins() {
     const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.COINS);
-    setCoins(response.amount);
-  }
-  /**
-   * Aktueller UserName wird gefecht und gespeichert
-   */
-  async function fetchUserName() {
-    const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.ME);
-    setUserName(response.username);
+    setUserCreds({ ...userCreds, coins: response.amount });
   }
 
   async function fetchCards() {
@@ -148,14 +130,13 @@ export default function MainPage() {
    * @param {*} url
    */
   async function fetchData(url) {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: token,
-      },
-    }).then((response) => response.json());
+    const response = await axios
+      .get(url, {
+        headers: {
+          token: userCreds.token,
+        },
+      })
+      .then((response) => response.data);
 
     return response;
   }
@@ -166,39 +147,31 @@ export default function MainPage() {
    * @param {*} Block
    */
   async function postData(url, Block) {
-    const response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(Block),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: token,
-      },
-    }).then((response) => response.json());
+    const response = await axios
+      .post(url, Block, {
+        headers: {
+          token: userCreds.token,
+        },
+      })
+      .then((response) => response.data);
     return response;
   }
 
   return (
-    <Grid container spacing={3} className={classes.grid}>
-      <MainPageHeader user={{ userName: userName, coins: coins }} />
+    <div>
+      <Grid container spacing={3} className={classes.grid}>
+        <Grid item xs={9}>
+          <Paper className={classes.paper}>
+            <Button variant="contained" color="primary" onClick={mineCoins}>
+              Start Mining
+            </Button>
+          </Paper>
+        </Grid>
 
-      <Grid item xs={9}>
-        <Paper className={classes.paper}>
-          <Button variant="contained" color="primary" onClick={mineCoins}>
-            Start Mining
-          </Button>
-          <Button variant="contained" color="primary" onClick={goToShop}>
-            CardShop
-          </Button>
-          <Button variant="contained" color="primary" onClick={goToCollection}>
-            Card-Collection
-          </Button>
-        </Paper>
+        <Grid item xs={12}>
+          <PokemonList pokemon={pokemon}></PokemonList>
+        </Grid>
       </Grid>
-
-      <Grid item xs={12}>
-        <PokemonList pokemon={pokemon}></PokemonList>
-      </Grid>
-    </Grid>
+    </div>
   );
 }

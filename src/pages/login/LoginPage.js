@@ -38,13 +38,23 @@ const useStyles = makeStyles((theme) => {
 
 export default function LoginPage() {
   const classes = useStyles();
+  const {userCreds, setUserCreds} = useContext(UserContext);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { token, setToken } = useContext(UserContext);
   const history = useHistory();
   const [error, setError] = useState("");
 
+
+   /**
+   * Coins-amount wird gefecht und im State gespeichert
+   */
+  const getCoins = async(token) => await axios.get(RESTConstans.DOMAIN + RESTConstans.COINS,{
+    headers:{
+      token: token
+    }
+  }).then((response) => response.data.amount).catch((error) => console.log(error));
+   
   const login = async () => {
     console.log(userName, password);
     const data = {
@@ -60,7 +70,10 @@ export default function LoginPage() {
       })
       .then(function (response) {
         console.log(response.data)
-        setToken(response.data.token);
+        const token = response.data.token
+        setUserCreds({username:data.username,token: token, coins: getCoins(token).data});
+        console.log(data.username)
+        console.log(userCreds)
         history.push("/main"); //hängt an aktuelle UL drann
       })
       .catch((error) =>

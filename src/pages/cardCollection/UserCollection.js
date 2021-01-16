@@ -4,6 +4,7 @@ import { UserContext } from "../../context/user/UserContext";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import PokemonList from "../../models/PokemonList";
 import CardShopHeader from "../shop/CardShopHeader";
+import axios from "axios"
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -17,9 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserCollection() {
-  const { user } = useContext(UserContext);
-  const { coins } = useContext(UserContext);
-  const { token } = useContext(UserContext);
+  const {userCreds} = useContext(UserContext)
   const [userCards, setUserCards] = useState([]);
   const classes = useStyles();
 
@@ -57,14 +56,11 @@ export default function UserCollection() {
    * @param {*} url
    */
   async function fetchData(url) {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        token: token,
-      },
-    }).then((response) => response.json());
+    const response = await axios.get(url, {
+        headers:{
+          token: userCreds.token,
+        }
+      }).then((response) => response.data)
 
     return response;
   }
