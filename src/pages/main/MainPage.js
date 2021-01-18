@@ -1,4 +1,3 @@
-import * as crypto from "crypto";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
@@ -8,11 +7,7 @@ import DefaultWorker from "worker-loader!../../workers/blockWorker.js";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
-import PokemonList from "../../models/PokemonList";
 import RESTConstans from "../../utiels/constans/RESTConstans";
-import MainPageHeader from "./MainPageHeader";
-import Navbar from "../../navbar/Navbar";
-import PageNames from "../../utiels/constans/PageNameConstants";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -27,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainPage() {
   const { userCreds, setUserCreds } = useContext(UserContext);
+  const { pokemons, setPokemons } = useContext(UserContext);
   const [worker, setWorker] = useState();
   const [difficulty, setDifficulty] = useState();
-  const [pokemon, setPokemon] = useState([]);
 
   //######################## UI - ELEMENTE ############################################
 
@@ -43,7 +38,6 @@ export default function MainPage() {
     fetchCoins();
     fetchDifficulty();
     initBlockWorker();
-    fetchCards();
   }, []);
 
   //###################################################################################
@@ -108,13 +102,6 @@ export default function MainPage() {
     setUserCreds({ ...userCreds, coins: response.amount });
   }
 
-  async function fetchCards() {
-    const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.CARDS);
-    console.log(response.cards.map((poke) => poke));
-    setPokemon([...response.cards]);
-    console.log("Whats in the PokemonArray", pokemon);
-  }
-
   async function fetchDifficulty() {
     const response = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.DIFFICULTY
@@ -166,10 +153,6 @@ export default function MainPage() {
               Start Mining
             </Button>
           </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
-          <PokemonList pokemon={pokemon}></PokemonList>
         </Grid>
       </Grid>
     </div>

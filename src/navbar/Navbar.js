@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   homeButton: {
     marginBottom: theme.spacing(1),
     marginRight: theme.spacing(1),
-    color: "white"
+    color: "white",
   },
 }));
 
@@ -67,6 +67,14 @@ export default function Navbar() {
               className={classes.buttons}
             >
               Cardcollection
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => history.push("/cards")}
+              className={classes.buttons}
+            >
+              All Cards
             </Button>
           </Typography>
 
