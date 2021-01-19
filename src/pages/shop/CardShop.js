@@ -1,6 +1,6 @@
 import { Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import react, { useContext, useEffect, useState } from "react";
+import react, {useContext, useEffect, useReducer, useState} from "react";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
@@ -36,13 +36,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const reducer = (state, action) => {
+  switch(action.type){
+    case 'increment':
+      return state +1;
+    case 'decrement':
+      return state -1;
+    default:
+      return state;
+  }
+}
 export default function CardShop() {
   const classes = useStyles();
   const { token } = useContext(UserContext);
   const [packs, setPacks] = useState([]);
   const [userName, setUserName] = useState("");
   const [coins, setCoins] = useState(0);
-  const [packAmount, setPackAmount] = useState(0);
+  const [packAmount, dispatch] = useReducer(reducer, 0);
   const base = packs[0];
 
   const basePack = new CardPackage(base, 5, [], 1, 10);
@@ -75,20 +85,24 @@ export default function CardShop() {
   }
 
   const buyPack = async () => {
-    await axios
-      .get(
-        RESTConstans.DOMAIN +
-          RESTConstans.PACKAGES +
-          "/Base" +
-          RESTConstans.DEFAULT_PACK,
-        {
-          headers: {
-            token: token,
-          },
-        }
-      )
-      .then((response) => console.log(response.data))
-      .catch((error) => console.log(error));
+    if(packAmount!=0) {
+      for (let i = packAmount; i > 0; i--) {
+        await axios
+            .get(
+                RESTConstans.DOMAIN +
+                RESTConstans.PACKAGES +
+                "/Base" +
+                RESTConstans.DEFAULT_PACK,
+                {
+                  headers: {
+                    token: token,
+                  },
+                }
+            )
+            .then((response) => console.log(response.data))
+            .catch((error) => console.log(error));
+      }
+    }
   };
 
   /**
@@ -118,14 +132,14 @@ export default function CardShop() {
           <Button
             onClick={() =>
               packAmount > 0
-                ? setPackAmount(packAmount - 1)
+                ? dispatch({type: 'decrement'})
                 : console.log("Anzahl der Packs ist auf 0!")
             }
           >
             <RemoveCircleIcon />
           </Button>
           <Button disabled>{packAmount}</Button>
-          <Button onClick={() => setPackAmount(packAmount + 1)}>
+          <Button onClick={() => dispatch({type: 'increment'})}>
             <AddCircleIcon />
           </Button>
         </ButtonGroup>
