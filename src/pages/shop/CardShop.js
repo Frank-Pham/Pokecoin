@@ -1,10 +1,18 @@
-import { Grid, Paper } from "@material-ui/core";
+import {
+  Grid,
+  DialogTitle,
+  Slide,
+  Dialog,
+  DialogActions,
+  DialogContent,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import react, {useContext, useEffect, useReducer, useState} from "react";
+import react, { useContext, useEffect, useReducer, useState } from "react";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import CardPackage from "../../models/CardPackage";
+import PokemonList from "../../models/PokemonList";
 import React from "react";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
@@ -12,6 +20,11 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import PokemonPack from "../../assets/images/PokemonPack.jpg";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
+import { ResizableBox } from "react-resizable";
+
+const transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -34,34 +47,48 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "100%",
     maxHeight: "100%",
   },
+
+  resizable: {
+    position: "relative",
+    "& .react-resizable-handle": {
+      position: "absolute",
+      width: 20,
+      height: 20,
+      bottom: 0,
+      right: 0,
+      padding: "0 3px 3px 0",
+      "background-repeat": "no-repeat",
+      "background-origin": "content-box",
+      "box-sizing": "border-box",
+      cursor: "se-resize",
+    },
+  },
 }));
 
 const reducer = (state, action) => {
-  switch(action.type){
-    case 'increment':
-      return state +1;
-    case 'decrement':
-      return state -1;
+  switch (action.type) {
+    case "increment":
+      return state + 1;
+    case "decrement":
+      return state - 1;
     default:
       return state;
   }
-}
+};
 export default function CardShop() {
   const classes = useStyles();
-  const { token } = useContext(UserContext);
+  const { userCreds, setUserCreds } = useContext(UserContext);
+  const [openPack, setOpenPack] = useState(false);
+  const [pokemon, setPokemon] = useState([]);
   const [packs, setPacks] = useState([]);
-  const [userName, setUserName] = useState("");
-  const [coins, setCoins] = useState(0);
   const [packAmount, dispatch] = useReducer(reducer, 0);
   const base = packs[0];
 
   const basePack = new CardPackage(base, 5, [], 1, 10);
-  basePack.fetchCards(token);
+  basePack.fetchCards(userCreds.token);
 
   useEffect(() => {
     fetchPackages();
-    fetchCoins();
-    fetchUserName();
   }, []);
 
   async function fetchPackages() {
@@ -74,35 +101,50 @@ export default function CardShop() {
       console.log(pack);
     }
   }
-  async function fetchCoins() {
-    const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.COINS);
-    setCoins(response.amount);
-  }
 
-  async function fetchUserName() {
-    const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.ME);
-    setUserName(response.username);
-  }
+  /**
+   * Coins-amount wird gefecht und im State gespeichert
+   */
+  const getCoins = async () =>
+    await axios
+      .get(RESTConstans.DOMAIN + RESTConstans.COINS, {
+        headers: {
+          token: userCreds.token,
+        },
+      })
+      .then((response) =>
+        setUserCreds({ ...userCreds, coins: response.data.amount })
+      )
+      .catch((error) => console.log(error));
 
   const buyPack = async () => {
-    if(packAmount!=0) {
+    if (packAmount != 0) {
       for (let i = packAmount; i > 0; i--) {
         await axios
-            .get(
-                RESTConstans.DOMAIN +
-                RESTConstans.PACKAGES +
-                "/Base" +
-                RESTConstans.DEFAULT_PACK,
-                {
-                  headers: {
-                    token: token,
-                  },
-                }
-            )
-            .then((response) => console.log(response.data))
-            .catch((error) => console.log(error));
+          .get(
+            RESTConstans.DOMAIN +
+              RESTConstans.PACKAGES +
+              "/Base" +
+              RESTConstans.DEFAULT_PACK,
+            {
+              headers: {
+                token: userCreds.token,
+              },
+            }
+          )
+          .then((response) => {
+            const cards = response.data.cards;
+            setPokemon([...cards]);
+            getCoins();
+            setOpenPack(true);
+          })
+          .catch((error) => console.log(error));
       }
     }
+  };
+
+  const closePack = () => {
+    setOpenPack(false);
   };
 
   /**
@@ -114,7 +156,7 @@ export default function CardShop() {
     const response = await axios
       .get(url, {
         headers: {
-          token: token,
+          token: userCreds.token,
         },
       })
       .then((response) => response.data);
@@ -132,14 +174,14 @@ export default function CardShop() {
           <Button
             onClick={() =>
               packAmount > 0
-                ? dispatch({type: 'decrement'})
+                ? dispatch({ type: "decrement" })
                 : console.log("Anzahl der Packs ist auf 0!")
             }
           >
             <RemoveCircleIcon />
           </Button>
           <Button disabled>{packAmount}</Button>
-          <Button onClick={() => dispatch({type: 'increment'})}>
+          <Button onClick={() => dispatch({ type: "increment" })}>
             <AddCircleIcon />
           </Button>
         </ButtonGroup>
@@ -147,6 +189,32 @@ export default function CardShop() {
       <Button variant="contained" color="primary" onClick={buyPack}>
         Kaufen
       </Button>
+      <ResizableBox height={400} width={800} className={classes.resizable}>
+        <Dialog
+          open={openPack}
+          TransitionComponent={transition}
+          keepMounted
+          onClose={closePack}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {"Pack Cards"}
+          </DialogTitle>
+          <DialogContent>
+            <Grid container spacing={3} className={classes.grid}>
+              <Grid item xs={12}>
+                <PokemonList pokemon={pokemon}></PokemonList>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closePack} color="primary">
+              Close and accept Pack
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </ResizableBox>
     </Grid>
   );
 }

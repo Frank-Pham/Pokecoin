@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import {
   Button,
   Grid,
@@ -10,11 +10,10 @@ import {
   TextField,
   FormControl,
 } from "@material-ui/core";
-import { Visibility, VisibilityOff, ViewColumn } from "@material-ui/icons";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/user/UserContext";
-import { red } from "@material-ui/core/colors";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => {
@@ -38,23 +37,26 @@ const useStyles = makeStyles((theme) => {
 
 export default function LoginPage() {
   const classes = useStyles();
-  const {userCreds, setUserCreds} = useContext(UserContext);
+  const { userCreds, setUserCreds } = useContext(UserContext);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
   const [error, setError] = useState("");
 
-
-   /**
+  /**
    * Coins-amount wird gefecht und im State gespeichert
    */
-  const getCoins = async(token) => await axios.get(RESTConstans.DOMAIN + RESTConstans.COINS,{
-    headers:{
-      token: token
-    }
-  }).then((response) => response.data.amount).catch((error) => console.log(error));
-   
+  const getCoins = async (token) =>
+    await axios
+      .get(RESTConstans.DOMAIN + RESTConstans.COINS, {
+        headers: {
+          token: token,
+        },
+      })
+      .then((response) => response.data.amount)
+      .catch((error) => console.log(error));
+
   const login = async () => {
     console.log(userName, password);
     const data = {
@@ -69,11 +71,15 @@ export default function LoginPage() {
         password: data.password,
       })
       .then(function (response) {
-        console.log(response.data)
-        const token = response.data.token
-        setUserCreds({username:data.username,token: token, coins: getCoins(token).data});
-        console.log(data.username)
-        console.log(userCreds)
+        console.log(response.data);
+        const token = response.data.token;
+        setUserCreds({
+          username: data.username,
+          token: token,
+          coins: getCoins(token).data,
+        });
+        console.log(data.username);
+        console.log(userCreds);
         history.push("/main"); //hängt an aktuelle UL drann
       })
       .catch((error) =>
