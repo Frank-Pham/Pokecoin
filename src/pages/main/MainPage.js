@@ -5,9 +5,11 @@ import React, { useContext, useEffect, useState } from "react";
 /* eslint-disable import/no-webpack-loader-syntax */
 import DefaultWorker from "worker-loader!../../workers/blockWorker.js";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid, Paper, CardMedia, Popover } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
 import RESTConstans from "../../utiels/constans/RESTConstans";
+import MiningAnimation from "../../assets/animations/MiningAnimation.gif";
+import useTabVisibility from "../../hooks/tabVisibility/useTabVisibility";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -18,13 +20,31 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
   },
+
+  media: {
+    width: 600,
+    height: 600,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
 }));
 
 export default function MainPage() {
   const { userCreds, setUserCreds } = useContext(UserContext);
-  const { pokemons, setPokemons } = useContext(UserContext);
+  //const { pokemons, setPokemons } = useContext(UserContext);
   const [worker, setWorker] = useState();
   const [difficulty, setDifficulty] = useState();
+  const [miningButtonText, setMiningButtonText] = useState("Start Mining");
+  const isTabVisible = useTabVisibility();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   //######################## UI - ELEMENTE ############################################
 
@@ -42,7 +62,9 @@ export default function MainPage() {
 
   //###################################################################################
 
-  const mineCoins = () => {
+  const mineCoins = (event) => {
+    setAnchorEl(event.currentTarget);
+    setMiningButtonText("Mining...");
     collectInfoForBlock();
   };
 
@@ -140,7 +162,15 @@ export default function MainPage() {
           token: userCreds.token,
         },
       })
-      .then((response) => response.data);
+      .then(
+        (response) => response.data,
+        setMiningButtonText("Start Mining"),
+        handleClose()
+      )
+      .catch(function (error) {
+        console.log("Mining Error: " + error);
+        setMiningButtonText("Start Mining");
+      });
     return response;
   }
 
@@ -149,9 +179,39 @@ export default function MainPage() {
       <Grid container spacing={3} className={classes.grid}>
         <Grid item xs={9}>
           <Paper className={classes.paper}>
-            <Button variant="contained" color="primary" onClick={mineCoins}>
-              Start Mining
+            <Button
+              variant="contained"
+              aria-describedby={id}
+              color="primary"
+              onClick={mineCoins}
+            >
+              {miningButtonText}
             </Button>
+            <p className="visibility">
+              {isTabVisible ? "Tab offen. Happy Mining :" + isTabVisible : "zu"}
+            </p>
+
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <CardMedia
+                className={classes.media}
+                component="iframe"
+                image={MiningAnimation}
+                autoPlay
+              ></CardMedia>
+            </Popover>
           </Paper>
         </Grid>
       </Grid>
