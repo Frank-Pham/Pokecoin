@@ -204,7 +204,9 @@ export default function CardShop() {
           <DialogContent>
             <Grid container spacing={3} className={classes.grid}>
               <Grid item xs={12}>
-                <PokemonList pokemon={pokemon}></PokemonList>
+                <PokemonList
+                  props={{ cards: pokemon, details: true }}
+                ></PokemonList>
               </Grid>
             </Grid>
           </DialogContent>

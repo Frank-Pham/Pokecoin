@@ -41,7 +41,7 @@ export default function PokemonCard({ props }) {
             R
           </Avatar>
         }
-        action={<IconButton aria-label="settings"></IconButton>}
+        action={<IconButton aria-label="settings">HALLO</IconButton>}
         title={props.pokemon.name}
         subheader={props.pokemon.subtype}
       />
