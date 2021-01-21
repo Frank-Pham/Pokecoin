@@ -26,15 +26,8 @@ const useStyles = makeStyles({
 export default function PokemonCard({ props }) {
   console.log("PokemonCards Props", props);
   const classes = useStyles();
-  const showDetails = () =>
-    props.detail ? (
-      <CardMedia className={classes.media} image={props.pokemon.imageUrl} />
-    ) : (
-      ""
-    );
-
-  return (
-    <Card className={classes.root}>
+  const showHeader = () =>
+    !props.details ? (
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -45,6 +38,19 @@ export default function PokemonCard({ props }) {
         title={props.pokemon.name}
         subheader={props.pokemon.subtype}
       />
+    ) : (
+      ""
+    );
+  const showDetails = () =>
+    props.detail ? (
+      <CardMedia className={classes.media} image={props.pokemon.imageUrl} />
+    ) : (
+      ""
+    );
+
+  return (
+    <Card className={classes.root}>
+      {showHeader()}
       <CardContent>{showDetails()}</CardContent>
     </Card>
   );

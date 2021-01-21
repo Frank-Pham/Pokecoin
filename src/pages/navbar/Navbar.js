@@ -8,8 +8,8 @@ import {
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "../context/user/UserContext";
-import PageNameConstants from "../utiels/constans/PageNameConstants";
+import { UserContext } from "../../context/user/UserContext";
+import PageNameConstants from "../../utiels/constans/PageNameConstants";
 import HomeIcon from "@material-ui/icons/Home";
 
 const useStyles = makeStyles((theme) => ({
