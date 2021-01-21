@@ -7,13 +7,12 @@ import {
   DialogContent,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import react, { useContext, useEffect, useReducer, useState } from "react";
+import React,{ useContext, useEffect, useReducer, useState } from "react";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import CardPackage from "../../models/CardPackage";
 import PokemonList from "../../models/PokemonList";
-import React from "react";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -83,6 +82,7 @@ export default function CardShop() {
   const [packs, setPacks] = useState([]);
   const [packAmount, dispatch] = useReducer(reducer, 0);
   const base = packs[0];
+
 
   const basePack = new CardPackage(base, 5, [], 1, 10);
   basePack.fetchCards(userCreds.token);
@@ -189,7 +189,7 @@ export default function CardShop() {
       <Button variant="contained" color="primary" onClick={buyPack}>
         Kaufen
       </Button>
-      <ResizableBox height={400} width={800} className={classes.resizable}>
+      <ResizableBox height={400} width={1200} className={classes.resizable}>
         <Dialog
           open={openPack}
           TransitionComponent={transition}
@@ -202,13 +202,9 @@ export default function CardShop() {
             {"Pack Cards"}
           </DialogTitle>
           <DialogContent>
-            <Grid container spacing={3} className={classes.grid}>
-              <Grid item xs={12}>
-                <PokemonList
-                  props={{ cards: pokemon, details: true }}
-                ></PokemonList>
-              </Grid>
-            </Grid>
+            <PokemonList
+                windowSize={12} props={{ cards: pokemon, details: true }}
+            ></PokemonList>
           </DialogContent>
           <DialogActions>
             <Button onClick={closePack} color="primary">

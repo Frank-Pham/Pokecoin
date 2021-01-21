@@ -9,7 +9,7 @@ onmessage = (event) => {
 function getValidHash(workerPackage) {
   const block = { ...workerPackage.block };
 
-  const difficulty = workerPackage.difficulty+2;
+  const difficulty = workerPackage.difficulty;
   console.log("difficulty Im Worker", difficulty);
   let counter = 0;
   let hashCode = buildHash(block);

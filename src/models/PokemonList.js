@@ -32,7 +32,7 @@ export default function PokemonList({ props }) {
         <Grid item xs={8}>
           <Grid item container>
             {props.cards.map((p) => (
-              <Grid item xs={4} key={p.name}>
+              <Grid item xs={props.windowSize} key={p.name}>
                 <PokemonCard
                   props={{ pokemon: p, detail: props.details }}
                   onClick={() => {

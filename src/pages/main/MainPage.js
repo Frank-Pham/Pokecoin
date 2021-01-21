@@ -72,7 +72,7 @@ export default function MainPage() {
     // Letzten Block holen und hash rausziehen
     fetchDifficulty();
     const lastBlock = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.LASTBLOCK
+        RESTConstans.DOMAIN + RESTConstans.LASTBLOCK
     );
     const prevBlockHash = lastBlock.hash;
     //neuen Block bauen mit hash als prevHash
@@ -94,8 +94,8 @@ export default function MainPage() {
 
   async function postOurBlock(postBlock) {
     const response = await postData(
-      RESTConstans.DOMAIN + RESTConstans.BLOCKS,
-      postBlock
+        RESTConstans.DOMAIN + RESTConstans.BLOCKS,
+        postBlock
     ).then(() => {
       fetchCoins();
     });
@@ -126,7 +126,7 @@ export default function MainPage() {
 
   async function fetchDifficulty() {
     const response = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.DIFFICULTY
+        RESTConstans.DOMAIN + RESTConstans.DIFFICULTY
     );
     setDifficulty(response);
     console.log("response nach dem Fetch", response);
@@ -140,12 +140,12 @@ export default function MainPage() {
    */
   async function fetchData(url) {
     const response = await axios
-      .get(url, {
-        headers: {
-          token: userCreds.token,
-        },
-      })
-      .then((response) => response.data);
+        .get(url, {
+          headers: {
+            token: userCreds.token,
+          },
+        })
+        .then((response) => response.data);
 
     return response;
   }
@@ -157,64 +157,64 @@ export default function MainPage() {
    */
   async function postData(url, Block) {
     const response = await axios
-      .post(url, Block, {
-        headers: {
-          token: userCreds.token,
-        },
-      })
-      .then(
-        (response) => response.data,
-        setMiningButtonText("Start Mining"),
-        handleClose()
-      )
-      .catch(function (error) {
-        console.log("Mining Error: " + error);
-        setMiningButtonText("Start Mining");
-      });
+        .post(url, Block, {
+          headers: {
+            token: userCreds.token,
+          },
+        })
+        .then(
+            (response) => response.data,
+            setMiningButtonText("Start Mining"),
+            handleClose()
+        )
+        .catch(function (error) {
+          console.log("Mining Error: " + error);
+          setMiningButtonText("Start Mining");
+        });
     return response;
   }
 
   return (
-    <div>
-      <Grid container spacing={3} className={classes.grid}>
-        <Grid item xs={9}>
-          <Paper className={classes.paper}>
-            <Button
-              variant="contained"
-              aria-describedby={id}
-              color="primary"
-              onClick={mineCoins}
-            >
-              {miningButtonText}
-            </Button>
-            <p className="visibility">
-              {isTabVisible ? "Tab offen. Happy Mining :" + isTabVisible : "zu"}
-            </p>
+      <div>
+        <Grid container spacing={3} className={classes.grid}>
+          <Grid item xs={9}>
+            <Paper className={classes.paper}>
+              <Button
+                  variant="contained"
+                  aria-describedby={id}
+                  color="primary"
+                  onClick={mineCoins}
+              >
+                {miningButtonText}
+              </Button>
+              <p className="visibility">
+                {isTabVisible ? "Tab offen. Happy Mining :" + isTabVisible : "zu"}
+              </p>
 
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-            >
-              <CardMedia
-                className={classes.media}
-                component="iframe"
-                image={MiningAnimation}
-                autoPlay
-              ></CardMedia>
-            </Popover>
-          </Paper>
+              <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+              >
+                <CardMedia
+                    className={classes.media}
+                    component="iframe"
+                    image={MiningAnimation}
+                    autoPlay
+                ></CardMedia>
+              </Popover>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
   );
 }
