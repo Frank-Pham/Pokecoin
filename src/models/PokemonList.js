@@ -1,8 +1,9 @@
 import { Grid, Paper, makeStyles } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import PokemonCard from "./PokemonCard";
 
-export default function PokemonList({ pokemon }) {
+export default function PokemonList({ props }) {
   const useStyles = makeStyles((theme) => ({
     grid: {
       width: "100%",
@@ -18,10 +19,11 @@ export default function PokemonList({ pokemon }) {
     },
   }));
   const classes = useStyles();
-  console.log("WAS IST IN DER PROMP ", pokemon);
+  const history = useHistory();
+  console.log("WAS IST IN DER PROMP ", props.cards);
   console.log(
     "pokemon-PROBS=",
-    pokemon.map((p) => p.name)
+    props.cards.map((p) => p.name)
   );
   return (
     <Grid container direction={"column"} spacing={3} className={classes.grid}>
@@ -29,9 +31,18 @@ export default function PokemonList({ pokemon }) {
         <Grid item xs={2} />
         <Grid item xs={8}>
           <Grid item container>
-            {pokemon.map((p) => (
+            {props.cards.map((p) => (
               <Grid item xs={4} key={p.name}>
-                <PokemonCard Pokemondetails={p} />
+                <PokemonCard
+                  props={{ pokemon: p, detail: props.details }}
+                  onClick={() => {
+                    try {
+                      history.push(`/cards/${p.id}`);
+                    } catch (e) {
+                      alert(e.message);
+                    }
+                  }}
+                />
               </Grid>
             ))}
           </Grid>

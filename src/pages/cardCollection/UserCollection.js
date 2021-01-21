@@ -4,7 +4,7 @@ import { UserContext } from "../../context/user/UserContext";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import PokemonList from "../../models/PokemonList";
 import CardShopHeader from "../shop/CardShopHeader";
-import axios from "axios"
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserCollection() {
-  const {userCreds} = useContext(UserContext)
+  const { userCreds } = useContext(UserContext);
   const [userCards, setUserCards] = useState([]);
   const classes = useStyles();
 
@@ -30,7 +30,7 @@ export default function UserCollection() {
     const response = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.USERCARDS
     );
-
+    console.log("FetchUserCollection response", response);
     const cardIDs = response.map((card) => card.cardId);
 
     const getCardDetails = async () => {
@@ -39,7 +39,6 @@ export default function UserCollection() {
 
     getCardDetails().then((cards) => {
       setUserCards([...cards]);
-      console.log("MEINE SAMMLUNG", userCards);
     });
   }
 
@@ -56,18 +55,20 @@ export default function UserCollection() {
    * @param {*} url
    */
   async function fetchData(url) {
-    const response = await axios.get(url, {
-        headers:{
+    const response = await axios
+      .get(url, {
+        headers: {
           token: userCreds.token,
-        }
-      }).then((response) => response.data)
+        },
+      })
+      .then((response) => response.data);
 
     return response;
   }
   return (
     <Grid container spacing={3} className={classes.grid}>
       <Grid item xs={12}>
-        <PokemonList pokemon={userCards}></PokemonList>
+        <PokemonList props={{ cards: userCards, details: false }}></PokemonList>
       </Grid>
     </Grid>
   );

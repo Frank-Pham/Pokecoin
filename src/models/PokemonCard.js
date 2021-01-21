@@ -23,8 +23,15 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PokemonCard({ Pokemondetails }) {
+export default function PokemonCard({ props }) {
+  console.log("PokemonCards Props", props);
   const classes = useStyles();
+  const showDetails = () =>
+    props.detail ? (
+      <CardMedia className={classes.media} image={props.pokemon.imageUrl} />
+    ) : (
+      ""
+    );
 
   return (
     <Card className={classes.root}>
@@ -35,12 +42,10 @@ export default function PokemonCard({ Pokemondetails }) {
           </Avatar>
         }
         action={<IconButton aria-label="settings"></IconButton>}
-        title={Pokemondetails.name}
-        subheader={Pokemondetails.subtype}
+        title={props.pokemon.name}
+        subheader={props.pokemon.subtype}
       />
-      <CardContent>
-        <CardMedia className={classes.media} image={Pokemondetails.imageUrl} />
-      </CardContent>
+      <CardContent>{showDetails()}</CardContent>
     </Card>
   );
 }
