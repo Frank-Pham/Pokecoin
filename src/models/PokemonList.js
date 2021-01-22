@@ -1,4 +1,4 @@
-import { Grid, Paper, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import PokemonCard from "./PokemonCard";
@@ -28,26 +28,17 @@ export default function PokemonList({ props }) {
   return (
     <Grid container direction={"column"} spacing={3} className={classes.grid}>
       <Grid item container>
-        <Grid item xs={2} />
-        <Grid item xs={8}>
+        <Grid item xs={1} />
+        <Grid item xs={10}>
           <Grid item container>
             {props.cards.map((p) => (
               <Grid item xs={props.windowSize} key={p.name}>
-                <PokemonCard
-                  props={{ pokemon: p, detail: props.details }}
-                  onClick={() => {
-                    try {
-                      history.push(`/cards/${p.id}`);
-                    } catch (e) {
-                      alert(e.message);
-                    }
-                  }}
-                />
+                <PokemonCard props={{ pokemon: p, detail: props.details }} />
               </Grid>
             ))}
           </Grid>
         </Grid>
-        <Grid item xs={2} />
+        <Grid item xs={1} />
       </Grid>
     </Grid>
   );

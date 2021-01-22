@@ -44,7 +44,7 @@ export default function Navbar() {
   const { userCreds } = useContext(UserContext);
   return (
     <div className={classes.root}>
-      <AppBar position="fixed">
+      <AppBar position="sticky">
         <Toolbar>
           <Button onClick={() => history.push("/main")}>
             <HomeIcon className={classes.homeButton} />

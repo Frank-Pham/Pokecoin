@@ -6,52 +6,48 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Avatar, CardHeader, CardMedia, IconButton } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
   },
   title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  media: {
-    paddingTop: "100%",
-    paddingBottom: "50%",
+    fontSize: "3000%",
   },
 });
 
 export default function PokemonCard({ props }) {
-  console.log("PokemonCards Props", props);
   const classes = useStyles();
-  const showHeader = () =>
-    !props.details ? (
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
-        }
-        action={<IconButton aria-label="settings">HALLO</IconButton>}
-        title={props.pokemon.name}
-        subheader={props.pokemon.subtype}
-      />
+  const history = useHistory();
+
+  console.log("PokemonCards Props", props.detail);
+
+  const showCard = () =>
+    props.detail !== null ? (
+      <Card className={classes.root}>
+        <CardContent>
+          <img
+            className={classes.img}
+            alt="complex"
+            src={props.pokemon.imageUrl}
+            onClick={() => {
+              try {
+                history.push(`/cardDetail/${props.pokemon.id}`);
+              } catch (e) {
+                alert(e.message);
+              }
+            }}
+          />
+        </CardContent>
+      </Card>
     ) : (
-      ""
-    );
-  const showDetails = () =>
-    props.detail ? (
-      <CardMedia className={classes.media} image={props.pokemon.imageUrl} />
-    ) : (
-      ""
+      <Card className={classes.root}>
+        <CardContent>
+          <Typography variant="h5">{props.pokemon.name}</Typography>
+        </CardContent>
+      </Card>
     );
 
-  return (
-    <Card className={classes.root}>
-      {showHeader()}
-      <CardContent>{showDetails()}</CardContent>
-    </Card>
-  );
+  return <div>{showCard()}</div>;
 }

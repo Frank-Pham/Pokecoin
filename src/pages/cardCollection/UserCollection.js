@@ -68,7 +68,7 @@ export default function UserCollection() {
   return (
     <Grid container spacing={3} className={classes.grid}>
       <Grid item xs={12}>
-        <PokemonList props={{ cards: userCards, details: false }}></PokemonList>
+        <PokemonList props={{ cards: userCards, details: 1 }}></PokemonList>
       </Grid>
     </Grid>
   );

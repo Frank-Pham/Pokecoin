@@ -51,7 +51,7 @@ export default function Cards() {
   return (
     <Grid container spacing={3} className={classes.grid}>
       <Grid item xs={12}>
-        <PokemonList props={{ cards: cards, details: true }}></PokemonList>
+        <PokemonList props={{ cards: cards, details: 1 }}></PokemonList>
       </Grid>
     </Grid>
   );

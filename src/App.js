@@ -7,8 +7,9 @@ import MainPage from "./pages/main/MainPage";
 import { UserContext } from "./context/user/UserContext";
 import CardShop from "./pages/shop/CardShop";
 import CardCollection from "./pages/cardCollection/CardCollection";
-import Navbar from "./navbar/Navbar";
+import Navbar from "./pages/navbar/Navbar";
 import Cards from "./pages/cards/Cards";
+import CardDetails from "./pages/cards/CardDetails";
 
 function App() {
   const [userCreds, setUserCreds] = useState({
@@ -42,6 +43,9 @@ function App() {
           </Route>
           <Route path="/cards">
             <Cards></Cards>
+          </Route>
+          <Route path="/cardDetail/:cardId">
+            <CardDetails>halloooo</CardDetails>
           </Route>
         </Switch>
       </UserContext.Provider>

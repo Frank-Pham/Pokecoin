@@ -7,7 +7,7 @@ import {
   DialogContent,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React,{ useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import RESTConstans from "../../utiels/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
@@ -82,7 +82,6 @@ export default function CardShop() {
   const [packs, setPacks] = useState([]);
   const [packAmount, dispatch] = useReducer(reducer, 0);
   const base = packs[0];
-
 
   const basePack = new CardPackage(base, 5, [], 1, 10);
   basePack.fetchCards(userCreds.token);
@@ -203,7 +202,8 @@ export default function CardShop() {
           </DialogTitle>
           <DialogContent>
             <PokemonList
-                windowSize={12} props={{ cards: pokemon, details: true }}
+              windowSize={12}
+              props={{ cards: pokemon, details: 1 }}
             ></PokemonList>
           </DialogContent>
           <DialogActions>
