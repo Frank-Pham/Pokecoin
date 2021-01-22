@@ -30,7 +30,6 @@ export default function UserCollection() {
     const response = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.USERCARDS
     );
-    console.log("FetchUserCollection response", response);
     const cardIDs = response.map((card) => card.cardId);
 
     const getCardDetails = async () => {

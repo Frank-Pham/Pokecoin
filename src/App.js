@@ -10,6 +10,7 @@ import CardCollection from "./pages/cardCollection/CardCollection";
 import Navbar from "./pages/navbar/Navbar";
 import Cards from "./pages/cards/Cards";
 import CardDetails from "./pages/cards/CardDetails";
+import { CardContext } from "./context/user/CardContext";
 
 function App() {
   const [userCreds, setUserCreds] = useState({
@@ -17,6 +18,7 @@ function App() {
     token: null,
     coins: 0,
   });
+  const [cardID, setCardID] = useState("");
 
   const isLoggedIn = () => (userCreds.token != null ? <Navbar /> : "");
 
@@ -38,15 +40,17 @@ function App() {
           <Route path="/cardShop">
             <CardShop></CardShop>
           </Route>
-          <Route path="/cardCollection">
-            <CardCollection></CardCollection>
-          </Route>
-          <Route path="/cards">
-            <Cards></Cards>
-          </Route>
-          <Route path="/cardDetail/:cardId">
-            <CardDetails>halloooo</CardDetails>
-          </Route>
+          <CardContext.Provider value={{ cardID, setCardID }}>
+            <Route path="/cardCollection">
+              <CardCollection></CardCollection>
+            </Route>
+            <Route path="/cards">
+              <Cards></Cards>
+            </Route>
+            <Route path="/cardDetail/:cardId">
+              <CardDetails>halloooo</CardDetails>
+            </Route>
+          </CardContext.Provider>
         </Switch>
       </UserContext.Provider>
     </Router>
