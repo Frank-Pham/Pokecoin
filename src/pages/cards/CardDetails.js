@@ -25,6 +25,12 @@ export default function CardDetails() {
     fetchCardDetails(cardID);
   }, []);
 
+  /**
+   * Gibt CardID für fetchData weiter und kriegt die CARD returned
+   * dann Card ins State setzten
+   * @param {*} cardID
+   */
+
   async function fetchCardDetails(cardID) {
     const response = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.CARDS + "/" + cardID
@@ -34,7 +40,8 @@ export default function CardDetails() {
   }
 
   /**
-   * fetchen ausgelagert
+   * Kriegt die URL mitgegeben und fetch
+   * die Datan der jeweiligen URL
    *
    * @param {*} url
    */
@@ -49,8 +56,6 @@ export default function CardDetails() {
 
     return response;
   }
-
-  console.log(card);
 
   return (
     <Card className={classes.root}>

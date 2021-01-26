@@ -90,6 +90,10 @@ export default function CardShop() {
     fetchPackages();
   }, []);
 
+  useEffect(() => {
+    console.log("WAS IN IN MEINEM STATE", pokemon);
+  }, [pokemon]);
+
   async function fetchPackages() {
     const packArray = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.PACKAGES
@@ -117,29 +121,25 @@ export default function CardShop() {
       .catch((error) => console.log(error));
 
   const buyPack = async () => {
-    if (packAmount != 0) {
-      for (let i = packAmount; i > 0; i--) {
-        await axios
-          .get(
-            RESTConstans.DOMAIN +
-              RESTConstans.PACKAGES +
-              "/Base" +
-              RESTConstans.DEFAULT_PACK,
-            {
-              headers: {
-                token: userCreds.token,
-              },
-            }
-          )
-          .then((response) => {
-            const cards = response.data.cards;
-            setPokemon([...cards]);
-            getCoins();
-            setOpenPack(true);
-          })
-          .catch((error) => console.log(error));
-      }
-    }
+    await axios
+      .get(
+        RESTConstans.DOMAIN +
+          RESTConstans.PACKAGES +
+          "/Base" +
+          RESTConstans.DEFAULT_PACK,
+        {
+          headers: {
+            token: userCreds.token,
+          },
+        }
+      )
+      .then((response) => {
+        const cards = response.data.cards;
+        setPokemon(cards);
+        getCoins();
+        setOpenPack(true);
+      })
+      .catch((error) => console.log(error));
   };
 
   const closePack = () => {
@@ -201,10 +201,7 @@ export default function CardShop() {
             {"Pack Cards"}
           </DialogTitle>
           <DialogContent>
-            <PokemonList
-              windowSize={12}
-              props={{ cards: pokemon, details: 1 }}
-            ></PokemonList>
+            {/* <PokemonList props={{ cards: pokemon, details: 1 }}></PokemonList> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={closePack} color="primary">
