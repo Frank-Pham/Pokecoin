@@ -8,32 +8,18 @@ import {
   InputLabel,
   FilledInput,
   TextField,
+  Link,
   FormControl,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import RESTConstans from "../../utiels/constans/RESTConstans";
+import RESTConstans from "../../utils/constans/RESTConstans";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
-
-const useStyles = makeStyles((theme) => {
-  createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: "center",
-      color: theme.palette.text.secondary,
-    },
-    input: {
-      "&MuiTextField-root": {
-        margin: theme.spacing(10),
-        width: "50ch",
-      },
-    },
-  });
-});
+import useStyles from "./LoginPageStyles";
+import { useCookies } from "react-cookie";
+import CookieConstants from "../../utils/constans/CookieConstants";
+import useRestCalls from "../../hooks/rest/useRestCalls";
 
 export default function LoginPage() {
   const classes = useStyles();
@@ -43,19 +29,11 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
   const [error, setError] = useState("");
+  const [cookies, setCookie, removeCookie] = useCookies([
+    CookieConstants.CREDENTIALS_STORE,
+  ]);
 
-  /**
-   * Coins-amount wird gefecht und im State gespeichert
-   */
-  const getCoins = async (token) =>
-    await axios
-      .get(RESTConstans.DOMAIN + RESTConstans.COINS, {
-        headers: {
-          token: token,
-        },
-      })
-      .then((response) => response.data.amount)
-      .catch((error) => console.log(error));
+  const { getCoins } = useRestCalls();
 
   const login = async () => {
     console.log(userName, password);
@@ -80,6 +58,11 @@ export default function LoginPage() {
         });
         console.log(data.username);
         console.log(userCreds);
+
+        // save data to cookies
+        setCookie(CookieConstants.USER_NAME, data.username);
+        setCookie(CookieConstants.TOKEN, token);
+
         history.push("/main"); //hängt an aktuelle UL drann
       })
       .catch((error) =>
@@ -87,53 +70,87 @@ export default function LoginPage() {
       );
   };
 
-  const goToRegister = () => {
+  const handleClickRegisterLink = async () => {
     history.push("/register");
   };
 
-  const register = async () => {
-    history.push("/register");
-  };
-
- 
   return (
-    <Grid container direction="column">
+    <Grid container justify="center" alignItems="center" direction="column">
       <h1>Pokecoin-Login 🪙</h1>
-      <TextField
-        id="forName"
-        label="Username"
-        variant="filled"
-        onChange={(event) => setUserName(event.target.value)}
-      />
-      <FormControl variant="filled">
-        <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
-        <FilledInput
-          id="filled-adornment-password"
-          label="Password"
-          type={showPassword ? "text" : "password"}
-          onChange={(event) => setPassword(event.target.value)}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-      <Button variant="contained" color="primary" onClick={login}>
-        Anmelden
-      </Button>
-      <Button variant="contained" color="primary" onClick={register}>
-        Registrieren
-      </Button>
-      <Button variant="contained" color="primary" onClick={goToRegister}>
-        Haben Sie noch keinen Account?
-      </Button>
-      <p color="red">{error}</p>
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justify="center"
+        className={classes.content}
+      >
+        <Grid container direction="column">
+          <Grid
+            container
+            justify="center"
+            className={classes.textFieldContainer}
+          >
+            <TextField
+              id="forName"
+              label="Username"
+              variant="filled"
+              onChange={(event) => setUserName(event.target.value)}
+              className={classes.textField}
+            />
+          </Grid>
+          <Grid
+            container
+            justify="center"
+            className={classes.textFieldContainer}
+          >
+            <FormControl variant="filled" className={classes.textField}>
+              <InputLabel htmlFor="filled-adornment-password">
+                Password
+              </InputLabel>
+              <FilledInput
+                id="filled-adornment-password"
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                onChange={(event) => setPassword(event.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          justify="center"
+          className={classes.loginButtonContainer}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={login}
+            className={classes.loginButton}
+          >
+            Anmelden
+          </Button>
+        </Grid>
+        <Grid item className={classes.registerContainer}>
+          <Link
+            href="#"
+            onClick={handleClickRegisterLink}
+            className={classes.link}
+          >
+            Registrieren
+          </Link>
+        </Grid>
+        <p color="red">{error}</p>
+      </Grid>
     </Grid>
   );
 }

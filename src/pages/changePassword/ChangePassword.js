@@ -13,9 +13,9 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import axios from "axios";
-import RESTConstans from "../../utiels/constans/RESTConstans";
+import RESTConstans from "../../utils/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
-import Exception from "../../utiels/constans/Exceptions";
+import Exception from "../../utils/constans/Exceptions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,11 +83,15 @@ export default function ChangePassword() {
         }
       )
       .then((response) => console.log(response.data))
-      .catch(function(error) {
+      .catch(function (error) {
         const errorJson = error.response.data;
         console.log(errorJson);
         setIsInvalid(true);
-        setErrorMessage(errorJson.code.includes(Exception.PASSWORD_INCORRECT) ? errorJson.text : "");
+        setErrorMessage(
+          errorJson.code.includes(Exception.PASSWORD_INCORRECT)
+            ? errorJson.text
+            : ""
+        );
       });
 
   return (
@@ -105,7 +109,7 @@ export default function ChangePassword() {
               type={showPassword ? "text" : "password"}
               value={oldPassword}
               onChange={(event) => setOldPassword(event.target.value)}
-              helperText={errorMessage === "" ?  "" : errorMessage}
+              helperText={errorMessage === "" ? "" : errorMessage}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton

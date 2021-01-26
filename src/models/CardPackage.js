@@ -1,5 +1,5 @@
 import axios from "axios";
-import RESTConstans from "../utiels/constans/RESTConstans";
+import RESTConstans from "../utils/constans/RESTConstans";
 
 export default class CardPackage {
   constructor(name, length, cards, rarity, cost) {

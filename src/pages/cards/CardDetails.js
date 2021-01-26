@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { CardContext } from "../../context/user/CardContext";
 import { UserContext } from "../../context/user/UserContext";
-import RESTConstans from "../../utiels/constans/RESTConstans";
+import RESTConstans from "../../utils/constans/RESTConstans";
 
 const useStyles = makeStyles({
   root: {

@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext, useEffect, useReducer, useState } from "react";
-import RESTConstans from "../../utiels/constans/RESTConstans";
+import RESTConstans from "../../utils/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import CardPackage from "../../models/CardPackage";

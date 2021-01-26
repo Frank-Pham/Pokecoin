@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
-import RESTConstans from "../../utiels/constans/RESTConstans";
+import RESTConstans from "../../utils/constans/RESTConstans";
 import PokemonList from "../../models/PokemonList";
 import CardShopHeader from "../shop/CardShopHeader";
 import axios from "axios";

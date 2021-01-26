@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import useStyles from "./RegisterPageStyles";
 import { Button, Grid } from "@material-ui/core";
-import RESTConstans from "../../utiels/constans/RESTConstans";
+import RESTConstans from "../../utils/constans/RESTConstans";
 
 export default function RegisterPage() {
   const [userName, setUserName] = useState("");
