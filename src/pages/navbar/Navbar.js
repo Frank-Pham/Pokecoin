@@ -77,7 +77,7 @@ export default function Navbar() {
             </Button>
           </Typography>
 
-          <AccountCircleIcon />
+          <Button variant="contained" color="primary" onClick={() => history.push("/profile")}><AccountCircleIcon /></Button>
           <Typography className={classes.typographyCSS}>
             {userCreds.username} - PokeCoins({userCreds.coins})
           </Typography>

@@ -95,6 +95,7 @@ export default function LoginPage() {
     history.push("/register");
   };
 
+ 
   return (
     <Grid container direction="column">
       <h1>Pokecoin-Login 🪙</h1>

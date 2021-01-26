@@ -11,6 +11,8 @@ import Navbar from "./pages/navbar/Navbar";
 import Cards from "./pages/cards/Cards";
 import CardDetails from "./pages/cards/CardDetails";
 import { CardContext } from "./context/user/CardContext";
+import ChangePassword from "./pages/changePassword/ChangePassword";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   const [userCreds, setUserCreds] = useState({
@@ -31,8 +33,14 @@ function App() {
           <Route exact path="/">
             <LoginPage />
           </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
           <Route path="/register">
             <RegisterPage />
+          </Route>
+          <Route path="/changePassword">
+            <ChangePassword />
           </Route>
           <Route path="/main">
             <MainPage />

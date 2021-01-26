@@ -3,6 +3,7 @@ const RESTConstans = {
   LOGIN: "/auth/login",
   REGISTER: "/auth/register",
   ME: "/auth/me",
+  CHANGE_PASSWORD: "/auth/changePassword",
   COINS: "/wallet/balance",
   LASTBLOCK: "/blockchain/lastBlock",
   BLOCKS: "/blockchain/blocks",
