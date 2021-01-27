@@ -145,6 +145,12 @@ export default function CardShop() {
   const closePack = () => {
     setOpenPack(false);
   };
+  const testBuy = () => {
+    setOpenPack(true);
+  };
+
+  const showPull = () =>
+    openPack === true ? <h1>Dein Gekauftes Pack!</h1> : "";
 
   /**
    * fetchen ausgelagert
@@ -188,6 +194,7 @@ export default function CardShop() {
       <Button variant="contained" color="primary" onClick={buyPack}>
         Kaufen
       </Button>
+
       <ResizableBox height={400} width={1200} className={classes.resizable}>
         <Dialog
           open={openPack}
@@ -201,8 +208,10 @@ export default function CardShop() {
             {"Pack Cards"}
           </DialogTitle>
           <DialogContent>
-            {/* <PokemonList props={{ cards: pokemon, details: 1 }}></PokemonList> */}
-            <h5>{pokemon}</h5>
+            <PokemonList
+              props={{ cards: pokemon, details: null }}
+            ></PokemonList>
+            {console.log(pokemon)}
           </DialogContent>
           <DialogActions>
             <Button onClick={closePack} color="primary">

@@ -7,7 +7,7 @@ import MainPage from "./pages/main/MainPage";
 import { UserContext } from "./context/user/UserContext";
 import CardShop from "./pages/shop/CardShop";
 import CardCollection from "./pages/cardCollection/CardCollection";
-import Navbar from "./pages/navbar/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Cards from "./pages/cards/Cards";
 import CardDetails from "./pages/cards/CardDetails";
 import { CardContext } from "./context/user/CardContext";

@@ -47,7 +47,11 @@ export default function PokemonCard({ props }) {
     ) : (
       <Card className={classes.root}>
         <CardContent>
-          <Typography variant="h5">{props.pokemon.name}</Typography>
+          <img
+            className={classes.img}
+            alt="complex"
+            src={props.pokemon.imageUrl}
+          />
         </CardContent>
       </Card>
     );
