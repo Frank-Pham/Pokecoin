@@ -56,10 +56,11 @@ function App() {
             <Route path="/main">
               <MainPage />
             </Route>
-            <Route path="/cardShop">
-              <CardShop></CardShop>
-            </Route>
             <CardContext.Provider value={{ cardID, setCardID }}>
+              <Route path="/cardShop">
+                <CardShop></CardShop>
+              </Route>
+
               <Route path="/cardCollection">
                 <CardCollection></CardCollection>
               </Route>

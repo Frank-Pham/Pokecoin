@@ -202,6 +202,7 @@ export default function CardShop() {
           </DialogTitle>
           <DialogContent>
             {/* <PokemonList props={{ cards: pokemon, details: 1 }}></PokemonList> */}
+            <h5>{pokemon}</h5>
           </DialogContent>
           <DialogActions>
             <Button onClick={closePack} color="primary">
