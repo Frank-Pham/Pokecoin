@@ -5,6 +5,8 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Card,
+  CardContent,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext, useEffect, useReducer, useState } from "react";
@@ -12,7 +14,7 @@ import RESTConstans from "../../utils/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import CardPackage from "../../models/CardPackage";
-import PokemonList from "../../models/PokemonList";
+import CardBack from "../../assets/images/CardBack.jpg";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -20,6 +22,7 @@ import PokemonPack from "../../assets/images/PokemonPack.jpg";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import { ResizableBox } from "react-resizable";
+import CardAnimation from "./CardAnimation";
 
 const transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -208,9 +211,10 @@ export default function CardShop() {
             {"Pack Cards"}
           </DialogTitle>
           <DialogContent>
-            <PokemonList
+            {/* <PokemonList
               props={{ cards: pokemon, details: null }}
-            ></PokemonList>
+            ></PokemonList> */}
+            <CardAnimation props={{ cards: pokemon }}></CardAnimation>
             {console.log(pokemon)}
           </DialogContent>
           <DialogActions>

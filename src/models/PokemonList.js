@@ -26,7 +26,7 @@ export default function PokemonList({ props }) {
     props.cards.map((p) => p.name)
   );
   return (
-    <Grid container direction={"column"} spacing={3} className={classes.grid}>
+    <Grid container direction={"row"} spacing={3} className={classes.grid}>
       <Grid item container>
         <Grid item xs={1} />
         <Grid item xs={10}>
