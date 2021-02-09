@@ -171,9 +171,23 @@ export default function CardShop() {
     return response;
   }
 
+  const testClick = () => {
+    console.log("HAllo!");
+  };
+
   return (
     <Grid container direction="column" justify="center" alignItems="center">
       <h1>{base} Packung</h1>
+
+      <img
+        className={classes.img}
+        alt="complex"
+        src={CardBack}
+        onClick={() => {
+          testClick();
+        }}
+      />
+
       <ButtonBase className={classes.image}>
         <img className={classes.img} alt="complex" src={PokemonPack} />
       </ButtonBase>
