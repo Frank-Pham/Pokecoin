@@ -14,7 +14,7 @@ import RESTConstans from "../../utils/constans/RESTConstans";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import CardPackage from "../../models/CardPackage";
-import CardBack from "../../assets/images/CardBack.jpg";
+import CardPack from "../../assets/images/CardBack.jpg";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -84,9 +84,10 @@ export default function CardShop() {
   const [pokemon, setPokemon] = useState([]);
   const [packs, setPacks] = useState([]);
   const [packAmount, dispatch] = useReducer(reducer, 0);
-  const base = packs[0];
+  let countPacks= 0;
+  const pack = packs[countPacks];
 
-  const basePack = new CardPackage(base, 5, [], 1, 10);
+  const basePack = new CardPackage(pack, 5, [], 1, 10);
   basePack.fetchCards(userCreds.token);
 
   useEffect(() => {
@@ -98,13 +99,31 @@ export default function CardShop() {
   }, [pokemon]);
 
   async function fetchPackages() {
+
     const packArray = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.PACKAGES
     );
-    setPacks((packs) => ["base"]);
-    console.log("Die Pack-Auswahl" + packArray);
+    const packIndex = JSON.stringify(packArray);
+
+    for (const pack of packArray){
+      console.log("Pack "+countPacks+ ": "+ pack);
+      console.log("Packlänge: "+ JSON.stringify(packArray[countPacks]));
+      if(packArray.length > 1){
+        countPacks++;
+        let howManyPacks= packArray.length;
+        while(countPacks< howManyPacks){
+          setPacks((packs) => JSON.stringify(packArray[countPacks]));
+        }
+      }
+
+    }
+
+    setPacks((packs) => Array.from(packArray));
+    console.log("Die Pack-Auswahl: " + packIndex);
+    console.log("Alle Packs: " + packs);
     for (const pack of packs) {
-      console.log(pack);
+      console.log("Was ist hier "+pack);
+
     }
   }
 
@@ -128,7 +147,7 @@ export default function CardShop() {
       .get(
         RESTConstans.DOMAIN +
           RESTConstans.PACKAGES +
-          "/Base" +
+          "/" + pack +
           RESTConstans.DEFAULT_PACK,
         {
           headers: {
@@ -177,12 +196,16 @@ export default function CardShop() {
 
   return (
     <Grid container direction="column" justify="center" alignItems="center">
-      <h1>{base} Packung</h1>
+      {packs.map((packName) => (
+      <>
+
+
+      <h1>{packName} Packung</h1>
 
       <img
         className={classes.img}
         alt="complex"
-        src={CardBack}
+        src={CardPack}
         onClick={() => {
           testClick();
         }}
@@ -238,6 +261,8 @@ export default function CardShop() {
           </DialogActions>
         </Dialog>
       </ResizableBox>
+      </>
+        ))}
     </Grid>
   );
 }
