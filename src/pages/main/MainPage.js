@@ -57,7 +57,7 @@ export default function MainPage() {
    */
   useEffect(() => {
     initBlockWorker();
-    //fetchCoins(); Ausgelagert in Blockchainservice
+    fetchCoins();
     //fetchDifficulty(); Ausgelagert
   }, []);
 
