@@ -1,12 +1,19 @@
 import * as crypto from "crypto";
+import BlockchainService from "../services/BlockchainService"
 
-onmessage = (event) => {
-  console.log("event", event);
-  const validHash = getValidHash(event.data);
+const blockchainService = BlockchainService.getInstance()
+onmessage = async(event) => {
+  console.log("event", event.data);
+  const difficulty = await blockchainService.fetchDifficulty(event.data)
+  const lastBlockHash = await blockchainService.fetchLastBlockHash(event.data)
+  const block = blockchainService.buildBlock(lastBlockHash)
+  console.log(difficulty, lastBlockHash)
+  /*const validHash =  await getValidHash(event.data);*/
+  const validHash = await getValidHash({block:block, difficulty:difficulty})
   postMessage(validHash);
 };
 
-function getValidHash(workerPackage) {
+async function getValidHash(workerPackage) {
   const block = { ...workerPackage.block };
 
   const difficulty = workerPackage.difficulty;
@@ -24,7 +31,6 @@ function getValidHash(workerPackage) {
     counter += 1;
   }
   console.log("counter", counter);
-
   return block;
 }
 

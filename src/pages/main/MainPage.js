@@ -33,8 +33,9 @@ export default function MainPage() {
   const { userCreds, setUserCreds } = useContext(UserContext);
   //const { pokemons, setPokemons } = useContext(UserContext);
   const [worker, setWorker] = useState();
-  const [difficulty, setDifficulty] = useState();
+  const [difficulty, setDifficulty] = useState(0);
   const [miningButtonText, setMiningButtonText] = useState("Start Mining");
+  const [isMining, setIsMining] = useState(false);
   const isTabVisible = useTabVisibility();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -55,22 +56,67 @@ export default function MainPage() {
    * UI-Element Username
    */
   useEffect(() => {
-    fetchCoins();
-    fetchDifficulty();
     initBlockWorker();
+    //fetchCoins(); Ausgelagert in Blockchainservice
+    //fetchDifficulty(); Ausgelagert
   }, []);
+
+  useEffect(() => {
+    if (worker && isTabVisible && isMining) worker.postMessage(userCreds.token);
+  }, [userCreds.coins]);
 
   //###################################################################################
 
   const mineCoins = (event) => {
     setAnchorEl(event.currentTarget);
     setMiningButtonText("Mining...");
-    collectInfoForBlock();
+    setIsMining(true);
+    worker.postMessage(userCreds.token)
+    //collectInfoForBlock();
   };
 
+  /*Ausgelagert
+  function buildBlock(prevHash) {
+    const newBlock = {
+      previousHash: prevHash,
+      data: "",
+      timestamp: Date.now(),
+      nonce: 0,
+    };
+    return newBlock;
+  }*/
+
+  async function postOurBlock(postBlock) {
+    const response = await postData(
+      RESTConstans.DOMAIN + RESTConstans.BLOCKS,
+      postBlock
+    ); /*.then(() => {
+      fetchCoins();
+    });*/
+    console.log("response", response);
+    return response;
+  }
+
+  function initBlockWorker() {
+    const tempWorker = new DefaultWorker();
+    setWorker(tempWorker);
+    tempWorker.onmessage = (event) => {
+      const postBlock = { ...event.data };
+      console.log("Mein Block" + JSON.stringify(postBlock));
+      postOurBlock(postBlock).then(() => {
+        fetchCoins();
+        //collectInfoForBlock();
+      });
+    };
+    return () => {
+      tempWorker.terminate();
+    };
+  }
+
+  /** Wurde in useffect gesteckt da der worker hier immer undefined war
   async function collectInfoForBlock() {
     // Letzten Block holen und hash rausziehen
-    fetchDifficulty();
+    await fetchDifficulty();
     const lastBlock = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.LASTBLOCK
     );
@@ -79,42 +125,10 @@ export default function MainPage() {
     const newBlock = buildBlock(prevBlockHash);
     //Block wird zum minen dem blockWorker übergeben
     const workerEvent = { block: { ...newBlock }, difficulty: difficulty };
-    worker.postMessage(workerEvent);
-  }
-
-  function buildBlock(prevHash) {
-    const newBlock = {
-      previousHash: prevHash,
-      data: "Sieben Schneeschipper schippen sieben Schippen Schnee.",
-      timestamp: Date.now(),
-      nonce: 0,
-    };
-    return newBlock;
-  }
-
-  async function postOurBlock(postBlock) {
-    const response = await postData(
-      RESTConstans.DOMAIN + RESTConstans.BLOCKS,
-      postBlock
-    ).then(() => {
-      fetchCoins();
-    });
-    console.log("response", response);
-    return response;
-  }
-
-  function initBlockWorker() {
-    const tempWorker = new DefaultWorker();
-    tempWorker.onmessage = (event) => {
-      const postBlock = { ...event.data };
-      console.log("Mein Block" + JSON.stringify(postBlock));
-      postOurBlock(postBlock);
-    };
-    setWorker(tempWorker);
-    return () => {
-      tempWorker.terminate();
-    };
-  }
+    //worker.postMessage(workerEvent);
+    console.log("worker", worker, userCreds.token);
+    worker.postMessage(userCreds.token);
+  }*/
 
   /**
    * Coins-amount wird gefecht und im Sate gespeichert
@@ -124,6 +138,7 @@ export default function MainPage() {
     setUserCreds({ ...userCreds, coins: response.amount });
   }
 
+  /* Ausgelagert
   async function fetchDifficulty() {
     const response = await fetchData(
       RESTConstans.DOMAIN + RESTConstans.DIFFICULTY
@@ -131,10 +146,10 @@ export default function MainPage() {
     setDifficulty(response);
     console.log("response nach dem Fetch", response);
     console.log("difficulty" + difficulty);
-  }
+  }*/
 
   /**
-   *
+   * Könnte man auslagern in einer fetchApi
    * Posten einen Blocks ausgelagert
    * @param {*} url
    * @param {*} Block
@@ -148,8 +163,8 @@ export default function MainPage() {
       })
       .then(
         (response) => response.data,
-        setMiningButtonText("Start Mining"),
-        handleClose()
+        //setMiningButtonText("Start Mining")
+        //handleClose()
       )
       .catch(function (error) {
         console.log("Mining Error: " + error);
@@ -186,7 +201,7 @@ export default function MainPage() {
             <p className="visibility">
               {isTabVisible ? "Tab offen. Happy Mining :" + isTabVisible : "zu"}
             </p>
-
+            {/*
             <Popover
               id={id}
               open={open}
@@ -207,7 +222,7 @@ export default function MainPage() {
                 image={MiningAnimation}
                 autoPlay
               ></CardMedia>
-            </Popover>
+            </Popover>*/}
           </Paper>
         </Grid>
       </Grid>
