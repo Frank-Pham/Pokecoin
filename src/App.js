@@ -1,18 +1,18 @@
 import "./App.css";
 import React, { useState } from "react";
-import RegisterPage from "./pages/register/RegisterPage";
+import RegisterPage from "./components/register/RegisterPage";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import LoginPage from "./pages/login/LoginPage";
-import MainPage from "./pages/main/MainPage";
+import LoginPage from "./components/login/LoginPage";
+import MainPage from "./components/main/MainPage";
 import { UserContext } from "./context/user/UserContext";
-import CardShop from "./pages/shop/CardShop";
-import CardCollection from "./pages/cardCollection/CardCollection";
+import CardShop from "./components/shop/CardShop";
+import CardCollection from "./components/cardCollection/CardCollection";
 import Navbar from "./components/navbar/Navbar";
-import Cards from "./pages/cards/Cards";
-import CardDetails from "./pages/cards/CardDetails";
+import Cards from "./components/cards/Cards";
+import CardDetails from "./components/cards/CardDetails";
 import { CardContext } from "./context/user/CardContext";
-import ChangePassword from "./pages/changePassword/ChangePassword";
-import Profile from "./pages/profile/Profile";
+import ChangePassword from "./components/changePassword/ChangePassword";
+import Profile from "./components/profile/Profile";
 import Colors from "./themes/Colors";
 
 function App() {
