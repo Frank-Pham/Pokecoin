@@ -14,6 +14,7 @@ import { CardContext } from "./context/user/CardContext";
 import ChangePassword from "./components/changePassword/ChangePassword";
 import Profile from "./components/profile/Profile";
 import Colors from "./themes/Colors";
+import Paths from "./utils/constants/Paths";
 
 function App() {
   const [userCreds, setUserCreds] = useState({
@@ -41,33 +42,33 @@ function App() {
           {isLoggedIn()}
 
           <Switch>
-            <Route exact path="/">
+            <Route exact path={Paths.BASE}>
               <LoginPage />
             </Route>
-            <Route path="/profile">
+            <Route path={Paths.PROFILE}>
               <Profile />
             </Route>
-            <Route path="/register">
+            <Route path={Paths.REGISTER}>
               <RegisterPage />
             </Route>
-            <Route path="/changePassword">
+            <Route path={Paths.CHANGE_PASSWORD}>
               <ChangePassword />
             </Route>
-            <Route path="/main">
+            <Route path={Paths.MAIN}>
               <MainPage />
             </Route>
             <CardContext.Provider value={{ cardID, setCardID }}>
-              <Route path="/cardShop">
+              <Route path={Paths.SHOP}>
                 <CardShop></CardShop>
               </Route>
 
-              <Route path="/cardCollection">
+              <Route path={Paths.COLLECTION}>
                 <CardCollection></CardCollection>
               </Route>
-              <Route path="/cards">
+              <Route path={Paths.CARDS}>
                 <Cards></Cards>
               </Route>
-              <Route path="/cardDetail/:cardId">
+              <Route path={Paths.CARD_DETAILS + "/:cardId"}>
                 <CardDetails>halloooo</CardDetails>
               </Route>
             </CardContext.Provider>
