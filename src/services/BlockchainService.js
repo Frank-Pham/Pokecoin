@@ -1,5 +1,5 @@
 import axios from "axios";
-import Constans from "../utils/constans/RESTConstans";
+import Constans from "../utils/constants/Endpoints";
 
 export default class BlockchainService {
   static blockchainServiceInstance = null;

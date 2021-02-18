@@ -1,4 +1,4 @@
-const RESTConstans = {
+const Endpoints = {
   DOMAIN: "https://rocky-lowlands-35145.herokuapp.com",
   LOGIN: "/auth/login",
   REGISTER: "/auth/register",
@@ -14,4 +14,4 @@ const RESTConstans = {
   DEFAULT_PACK: "/buyDefaultPackage",
 };
 
-export default RESTConstans;
+export default Endpoints;

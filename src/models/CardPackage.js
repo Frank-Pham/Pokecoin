@@ -1,5 +1,5 @@
 import axios from "axios";
-import RESTConstans from "../utils/constans/RESTConstans";
+import Endpoints from "../utils/constants/Endpoints";
 
 export default class CardPackage {
   constructor(name, length, cards, rarity, cost) {
@@ -25,11 +25,11 @@ export default class CardPackage {
 
   async fetchCards(token) {
     /*const cards = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.CARDS,
+      Endpoints.DOMAIN + Endpoints.CARDS,
       token
     );*/
 
-    const cardUrl = RESTConstans.DOMAIN + RESTConstans.CARDS;
+    const cardUrl = Endpoints.DOMAIN + Endpoints.CARDS;
 
     const cards = await axios
       .get(cardUrl, {

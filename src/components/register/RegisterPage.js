@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import useStyles from "./RegisterPageStyles";
 import { Button, Grid } from "@material-ui/core";
-import RESTConstans from "../../utils/constans/RESTConstans";
+import Endpoints from "../../utils/constants/Endpoints";
 
 export default function RegisterPage() {
   const [userName, setUserName] = useState("");
@@ -16,7 +16,7 @@ export default function RegisterPage() {
       password: password,
     };
     console.log(data);
-    const response = await fetch(RESTConstans.DOMAIN + RESTConstans.REGISTER, {
+    const response = await fetch(Endpoints.DOMAIN + Endpoints.REGISTER, {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },

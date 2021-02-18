@@ -1,4 +1,4 @@
-import RESTConstans from "../../utils/constans/RESTConstans";
+import Endpoints from "../../utils/constants/Endpoints";
 import axios from "axios";
 import { UserContext } from "../../context/user/UserContext";
 import { useContext } from "react";
@@ -25,7 +25,7 @@ const useRestCalls = () => {
    */
   const getCoins = async (token) => {
     const data = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.COINS,
+      Endpoints.DOMAIN + Endpoints.COINS,
       token
     );
     if (data !== null && data !== undefined) {

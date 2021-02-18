@@ -13,9 +13,9 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import axios from "axios";
-import RESTConstans from "../../utils/constans/RESTConstans";
+import Endpoints from "../../utils/constants/Endpoints";
 import { UserContext } from "../../context/user/UserContext";
-import Exception from "../../utils/constans/Exceptions";
+import Exception from "../../utils/constants/Exceptions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChangePassword() {
   const classes = useStyles();
-  const url = RESTConstans.DOMAIN + RESTConstans.CHANGE_PASSWORD;
+  const url = Endpoints.DOMAIN + Endpoints.CHANGE_PASSWORD;
   const { userCreds } = useContext(UserContext);
   const [newPassword, setNewPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");

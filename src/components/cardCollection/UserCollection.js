@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
-import RESTConstans from "../../utils/constans/RESTConstans";
+import Endpoints from "../../utils/constants/Endpoints";
 import PokemonList from "../../models/PokemonList";
 import CardShopHeader from "../shop/CardShopHeader";
 import axios from "axios";
@@ -28,7 +28,7 @@ export default function UserCollection() {
 
   async function fetchUserCollection() {
     const response = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.USERCARDS
+      Endpoints.DOMAIN + Endpoints.USERCARDS
     );
     const cardIDs = response.map((card) => card.cardId);
 
@@ -43,7 +43,7 @@ export default function UserCollection() {
 
   async function fetchCardDetails(cardId) {
     const response = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.CARDS + "/" + cardId
+      Endpoints.DOMAIN + Endpoints.CARDS + "/" + cardId
     );
 
     return response.card;

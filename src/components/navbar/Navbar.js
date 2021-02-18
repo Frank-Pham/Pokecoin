@@ -9,7 +9,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/user/UserContext";
-import PageNameConstants from "../../utils/constans/PageNameConstants";
+import PageNameConstants from "../../utils/constants/PageNameConstants";
 import HomeIcon from "@material-ui/icons/Home";
 
 const useStyles = makeStyles((theme) => ({

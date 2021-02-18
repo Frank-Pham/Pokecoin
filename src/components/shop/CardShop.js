@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext, useEffect, useReducer, useState } from "react";
-import RESTConstans from "../../utils/constans/RESTConstans";
+import Endpoints from "../../utils/constants/Endpoints";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import CardPackage from "../../models/CardPackage";
@@ -101,7 +101,7 @@ export default function CardShop() {
   async function fetchPackages() {
 
     const packArray = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.PACKAGES
+      Endpoints.DOMAIN + Endpoints.PACKAGES
     );
     const packIndex = JSON.stringify(packArray);
 
@@ -132,7 +132,7 @@ export default function CardShop() {
    */
   const getCoins = async () =>
     await axios
-      .get(RESTConstans.DOMAIN + RESTConstans.COINS, {
+      .get(Endpoints.DOMAIN + Endpoints.COINS, {
         headers: {
           token: userCreds.token,
         },
@@ -145,10 +145,10 @@ export default function CardShop() {
   const buyPack = async () => {
     await axios
       .get(
-        RESTConstans.DOMAIN +
-          RESTConstans.PACKAGES +
+        Endpoints.DOMAIN +
+          Endpoints.PACKAGES +
           "/" + pack +
-          RESTConstans.DEFAULT_PACK,
+          Endpoints.DEFAULT_PACK,
         {
           headers: {
             token: userCreds.token,

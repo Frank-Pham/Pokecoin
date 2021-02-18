@@ -12,13 +12,13 @@ import {
   FormControl,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import RESTConstans from "../../utils/constans/RESTConstans";
+import Endpoints from "../../utils/constants/Endpoints";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import useStyles from "./LoginPageStyles";
 import { useCookies } from "react-cookie";
-import CookieConstants from "../../utils/constans/CookieConstants";
+import CookieConstants from "../../utils/constants/CookieConstants";
 import useRestCalls from "../../hooks/rest/useRestCalls";
 
 export default function LoginPage() {
@@ -44,7 +44,7 @@ export default function LoginPage() {
     };
     console.log(data);
     await axios
-      .post(RESTConstans.DOMAIN + RESTConstans.LOGIN, {
+      .post(Endpoints.DOMAIN + Endpoints.LOGIN, {
         username: data.username,
         password: data.password,
       })

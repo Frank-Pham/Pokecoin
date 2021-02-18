@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { CardContext } from "../../context/user/CardContext";
 import { UserContext } from "../../context/user/UserContext";
-import RESTConstans from "../../utils/constans/RESTConstans";
+import Endpoints from "../../utils/constants/Endpoints";
 
 const useStyles = makeStyles({
   root: {
@@ -33,7 +33,7 @@ export default function CardDetails() {
 
   async function fetchCardDetails(cardID) {
     const response = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.CARDS + "/" + cardID
+      Endpoints.DOMAIN + Endpoints.CARDS + "/" + cardID
     );
     setCard(response.card);
     return response.card;

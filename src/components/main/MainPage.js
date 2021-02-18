@@ -7,7 +7,7 @@ import DefaultWorker from "worker-loader!../../workers/blockWorker.js";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper, CardMedia, Popover } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
-import RESTConstans from "../../utils/constans/RESTConstans";
+import Endpoints from "../../utils/constants/Endpoints";
 import MiningAnimation from "../../assets/animations/MiningAnimation.gif";
 import useTabVisibility from "../../hooks/tabVisibility/useTabVisibility";
 
@@ -88,7 +88,9 @@ export default function MainPage() {
 
   async function postOurBlock(postBlock) {
     const response = await postData(
-      RESTConstans.DOMAIN + RESTConstans.BLOCKS,
+      Endpoints
+    .DOMAIN + Endpoints
+    .BLOCKS,
       postBlock
     ); /*.then(() => {
       fetchCoins();
@@ -118,7 +120,9 @@ export default function MainPage() {
     // Letzten Block holen und hash rausziehen
     await fetchDifficulty();
     const lastBlock = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.LASTBLOCK
+      Endpoints
+    .DOMAIN + Endpoints
+    .LASTBLOCK
     );
     const prevBlockHash = lastBlock.hash;
     //neuen Block bauen mit hash als prevHash
@@ -134,14 +138,18 @@ export default function MainPage() {
    * Coins-amount wird gefecht und im Sate gespeichert
    */
   async function fetchCoins() {
-    const response = await fetchData(RESTConstans.DOMAIN + RESTConstans.COINS);
+    const response = await fetchData(Endpoints
+    .DOMAIN + Endpoints
+    .COINS);
     setUserCreds({ ...userCreds, coins: response.amount });
   }
 
   /* Ausgelagert
   async function fetchDifficulty() {
     const response = await fetchData(
-      RESTConstans.DOMAIN + RESTConstans.DIFFICULTY
+      Endpoints
+    .DOMAIN + Endpoints
+    .DIFFICULTY
     );
     setDifficulty(response);
     console.log("response nach dem Fetch", response);
