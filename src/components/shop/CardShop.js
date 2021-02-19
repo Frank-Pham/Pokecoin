@@ -12,7 +12,6 @@ import Endpoints from "../../utils/constants/Endpoints";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import CardPackage from "../../models/CardPackage";
-import CardPack from "../../assets/images/CardBack.jpg";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -177,10 +176,6 @@ export default function CardShop() {
       .then((response) => response.data);
     return response;
   }
-
-  const testClick = () => {
-    console.log("HAllo!");
-  };
 
   return (
     <Grid container direction="column" justify="center" alignItems="center">

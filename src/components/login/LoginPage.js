@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
 import {
   Button,
   Grid,
@@ -30,9 +29,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
   const [error, setError] = useState("");
-  const [cookies, setCookie, removeCookie] = useCookies([
-    CookieConstants.CREDENTIALS_STORE,
-  ]);
+  const [setCookie] = useCookies([CookieConstants.CREDENTIALS_STORE]);
 
   const { getCoins } = useRestCalls();
 

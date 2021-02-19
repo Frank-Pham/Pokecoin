@@ -1,6 +1,5 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import React from "react";
-import { useHistory } from "react-router-dom";
 import PokemonCard from "./PokemonCard";
 
 export default function PokemonList({ props }) {
@@ -19,7 +18,6 @@ export default function PokemonList({ props }) {
     },
   }));
   const classes = useStyles();
-  const history = useHistory();
   console.log("WAS IST IN DER PROMP ", props.cards);
   console.log(
     "pokemon-PROBS=",

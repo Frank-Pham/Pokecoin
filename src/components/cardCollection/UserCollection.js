@@ -3,7 +3,6 @@ import { Grid, makeStyles } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
 import Endpoints from "../../utils/constants/Endpoints";
 import PokemonList from "../../models/PokemonList";
-import CardShopHeader from "../shop/CardShopHeader";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,9 +26,7 @@ export default function UserCollection() {
   }, []);
 
   async function fetchUserCollection() {
-    const response = await fetchData(
-      Endpoints.DOMAIN + Endpoints.USERCARDS
-    );
+    const response = await fetchData(Endpoints.DOMAIN + Endpoints.USERCARDS);
     const cardIDs = response.map((card) => card.cardId);
 
     const getCardDetails = async () => {
