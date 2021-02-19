@@ -4,6 +4,7 @@ import { UserContext } from "../../context/user/UserContext";
 import Endpoints from "../../utils/constants/Endpoints";
 import PokemonList from "../../models/PokemonList";
 import axios from "axios";
+import RequestApi from "../../api/RequestApi";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserCollection() {
+  const requestApi = RequestApi.getInstance();
   const { userCreds } = useContext(UserContext);
   const [userCards, setUserCards] = useState([]);
   const classes = useStyles();
@@ -26,7 +28,10 @@ export default function UserCollection() {
   }, []);
 
   async function fetchUserCollection() {
-    const response = await fetchData(Endpoints.DOMAIN + Endpoints.USERCARDS);
+    const response = await requestApi.getRequest(
+      Endpoints.DOMAIN + Endpoints.USERCARDS,
+      userCreds.token
+    );
     const cardIDs = response.map((card) => card.cardId);
 
     const getCardDetails = async () => {
@@ -39,8 +44,9 @@ export default function UserCollection() {
   }
 
   async function fetchCardDetails(cardId) {
-    const response = await fetchData(
-      Endpoints.DOMAIN + Endpoints.CARDS + "/" + cardId
+    const response = await requestApi.getRequest(
+      Endpoints.DOMAIN + Endpoints.CARDS + "/" + cardId,
+      userCreds.token
     );
 
     return response.card;

@@ -18,11 +18,7 @@ export default function PokemonList({ props }) {
     },
   }));
   const classes = useStyles();
-  console.log("WAS IST IN DER PROMP ", props.cards);
-  console.log(
-    "pokemon-PROBS=",
-    props.cards.map((p) => p.name)
-  );
+
   return (
     <Grid container direction={"row"} spacing={3} className={classes.grid}>
       <Grid item container>

@@ -20,7 +20,6 @@ export default function PokemonCard({ props }) {
   const classes = useStyles();
   const history = useHistory();
 
-
   const showCard = () =>
     props.detail !== null ? (
       <Card className={classes.root}>

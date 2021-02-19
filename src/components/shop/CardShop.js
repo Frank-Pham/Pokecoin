@@ -96,10 +96,6 @@ export default function CardShop() {
     fetchPackages();
   }, []);
 
-  useEffect(() => {
-    console.log("WAS IN IN MEINEM STATE", pokemon);
-  }, [pokemon]);
-
   async function fetchPackages() {
     const packArray = await fetchData(Endpoints.DOMAIN + Endpoints.PACKAGES);
     const packIndex = JSON.stringify(packArray);
@@ -123,7 +119,7 @@ export default function CardShop() {
       console.log("Was ist hier " + pack);
     }
   }
-  
+
   const buyPack = async () => {
     await axios
       .get(
@@ -138,12 +134,12 @@ export default function CardShop() {
           },
         }
       )
-      .then(async(response) => {
+      .then(async (response) => {
         const cards = response.data.cards;
         setPokemon(cards);
         await coinBalanceService.getCoins(userCreds.token).then((response) => {
-          setUserCreds({...userCreds, coins:response})
-        })
+          setUserCreds({ ...userCreds, coins: response });
+        });
         setOpenPack(true);
       })
       .catch((error) => console.log(error));
