@@ -21,8 +21,10 @@ import { useCookies } from "react-cookie";
 import CookieConstants from "../../utils/constants/CookieConstants";
 import useRestCalls from "../../hooks/rest/useRestCalls";
 import Paths from "../../utils/constants/Paths";
+import RequestApi from "../../api/RequestApi";
 
 export default function LoginPage() {
+  const requestApi = RequestApi.getInstance();
   const classes = useStyles();
   const { userCreds, setUserCreds } = useContext(UserContext);
   const [userName, setUserName] = useState("");
@@ -36,7 +38,31 @@ export default function LoginPage() {
 
   const { getCoins } = useRestCalls();
 
-  const login = async () => {
+  const login = async () =>
+    await requestApi
+      .postRequest(
+        Endpoints.DOMAIN + Endpoints.LOGIN,
+        { username: userName, password: password },
+        null
+      )
+      .then((response) => {
+        const token = response.token;
+        setUserCreds({
+          username: userName,
+          token: token,
+          coins: getCoins(token).data,
+        });
+        setCookie(CookieConstants.USER_NAME, userName);
+        setCookie(CookieConstants.TOKEN, token);
+
+        history.push(Paths.MAIN); //hängt an aktuelle UL drann
+      })
+      .catch((error) =>
+        setError("Loginname and/or password is wrong, please try again!")
+      );
+
+      /*
+  const login2 = async () => {
     console.log(userName, password);
     const data = {
       username: userName,
@@ -70,6 +96,7 @@ export default function LoginPage() {
         setError("Loginname and/or password is wrong, please try again!")
       );
   };
+  */
 
   const handleClickRegisterLink = async () => {
     history.push(Paths.REGISTER);

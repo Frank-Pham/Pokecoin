@@ -9,8 +9,8 @@ export default function useTabVisibility() {
       "visibilitychange",
       handleVisbilityState(!document.hidden),
     );
-    console.log(document.hidden,document.visibilityState)
-    //return () => document.removeEventListener("visibilitychange", handleVisbilityState);
+    console.log(document.visibilityState)
+    return () => document.removeEventListener("visibilitychange", handleVisbilityState);
   });
 
   return tabVisibility;
