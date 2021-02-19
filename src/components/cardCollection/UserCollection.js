@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
 import Endpoints from "../../utils/constants/Endpoints";
-import PokemonList from "../../models/PokemonList";
+import PokemonList from "../models/PokemonList";
 import axios from "axios";
 import RequestApi from "../../api/RequestApi";
 

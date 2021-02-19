@@ -1,5 +1,5 @@
 import axios from "axios";
-import Endpoints from "../utils/constants/Endpoints";
+import Endpoints from "../../utils/constants/Endpoints";
 
 export default class CardPackage {
   constructor(name, length, cards, rarity, cost) {
