@@ -6,7 +6,7 @@ import LoginPage from "./components/login/LoginPage";
 import MainPage from "./components/main/MainPage";
 import { UserContext } from "./context/user/UserContext";
 import CardShop from "./components/shop/CardShop";
-import CardCollection from "./components/cardCollection/CardCollection";
+import UserCollection from "./components/cardCollection/UserCollection";
 import Navbar from "./components/navbar/Navbar";
 import Cards from "./components/cards/Cards";
 import CardDetails from "./components/cards/CardDetails";
@@ -63,7 +63,7 @@ function App() {
               </Route>
 
               <Route path={Paths.COLLECTION}>
-                <CardCollection></CardCollection>
+                <UserCollection></UserCollection>
               </Route>
               <Route path={Paths.CARDS}>
                 <Cards></Cards>

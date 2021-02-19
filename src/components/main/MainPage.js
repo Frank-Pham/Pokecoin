@@ -39,9 +39,7 @@ export default function MainPage() {
   const requestApi = RequestApi.getInstance();
   const coinBalanceService = CoinBalanceService.getInstance();
   const { userCreds, setUserCreds } = useContext(UserContext);
-  //const { pokemons, setPokemons } = useContext(UserContext);
   const [worker, setWorker] = useState();
-  const [difficulty, setDifficulty] = useState(0);
   const [miningButtonText, setMiningButtonText] = useState("Start Mining");
   const [isMining, setIsMining] = useState(false);
   const isTabVisible = useTabVisibility();
@@ -57,7 +55,6 @@ export default function MainPage() {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  //######################## UI - ELEMENTE ############################################
 
   const classes = useStyles();
   /**
@@ -76,7 +73,6 @@ export default function MainPage() {
     }
   }, [userCreds.coins]);
 
-  //###################################################################################
 
   const mineCoins = (event) => {
     if (isMining === false) {

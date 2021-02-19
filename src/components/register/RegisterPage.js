@@ -25,7 +25,6 @@ export default function RegisterPage() {
       })
       .then(function (response) {
         console.log(response);
-        setError("");
       })
       .catch((error) => setError(error.response.data.message));
   };

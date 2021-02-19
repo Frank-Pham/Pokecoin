@@ -21,7 +21,6 @@ export default function CardDetails() {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log(cardID);
     fetchCardDetails(cardID);
   }, []);
 

@@ -107,7 +107,6 @@ export default function ChangePassword() {
       )
       .catch(function (error) {
         const errorJson = error.response.data;
-        console.log(errorJson);
         setIsInvalid(true);
         setErrorMessage(
           errorJson.code.includes(Exception.PASSWORD_INCORRECT)

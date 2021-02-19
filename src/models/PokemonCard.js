@@ -20,7 +20,6 @@ export default function PokemonCard({ props }) {
   const classes = useStyles();
   const history = useHistory();
 
-  console.log("PokemonCards Props", props.detail);
 
   const showCard = () =>
     props.detail !== null ? (
