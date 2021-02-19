@@ -10,22 +10,22 @@ import {
   TextField,
   Link,
   FormControl,
-  FormHelperText
+  FormHelperText,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import Endpoints from "../../utils/constants/Endpoints";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/user/UserContext";
-import axios from "axios";
 import useStyles from "./LoginPageStyles";
 import { useCookies } from "react-cookie";
 import CookieConstants from "../../utils/constants/CookieConstants";
-import useRestCalls from "../../hooks/rest/useRestCalls";
 import Paths from "../../utils/constants/Paths";
 import RequestApi from "../../api/RequestApi";
+import CoinBalanceService from "../../services/CoinBalanceService";
 
 export default function LoginPage() {
   const requestApi = RequestApi.getInstance();
+  const coinBalanceService = CoinBalanceService.getInstance();
   const classes = useStyles();
   const { userCreds, setUserCreds } = useContext(UserContext);
   const [userName, setUserName] = useState("");
@@ -37,8 +37,6 @@ export default function LoginPage() {
     CookieConstants.CREDENTIALS_STORE,
   ]);
 
-  const { getCoins } = useRestCalls();
-
   const login = async () =>
     await requestApi
       .postRequest(
@@ -46,21 +44,20 @@ export default function LoginPage() {
         { username: userName, password: password },
         null
       )
-      .then((response) => {
+      .then(async(response) => {
         const token = response.data.token;
+        const coins = await coinBalanceService.getCoins(token).then((response) =>response)
         setUserCreds({
           username: userName,
           token: token,
-          coins: getCoins(token).data,
+          coins: coins,
         });
         setCookie(CookieConstants.USER_NAME, userName);
         setCookie(CookieConstants.TOKEN, token);
 
         history.push(Paths.MAIN); //hängt an aktuelle UL drann
       })
-      .catch((error) =>
-        setError(error.response.data.message)
-      );
+      .catch((error) => setError(error.response.data.message));
 
   const handleClickRegisterLink = async () => {
     history.push(Paths.REGISTER);
@@ -141,7 +138,9 @@ export default function LoginPage() {
             Registrieren
           </Link>
         </Grid>
-        <FormHelperText error={error == "" ? false:true} filled={true}>{error}</FormHelperText>
+        <FormHelperText error={error == "" ? false : true} filled={true}>
+          {error}
+        </FormHelperText>
       </Grid>
     </Grid>
   );

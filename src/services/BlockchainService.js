@@ -3,6 +3,9 @@ import Endpoints from "../utils/constants/Endpoints";
 export default class BlockchainService {
   static _blockchainServiceInstance = null;
 
+  /**
+   * Returns the blockChainService as a Singleton
+   */
   static getInstance() {
     if (BlockchainService._blockchainServiceInstance == null)
       BlockchainService._blockchainServiceInstance = new BlockchainService();
@@ -21,7 +24,10 @@ export default class BlockchainService {
       token
     );
   }
-
+  /**
+   * Builds a block with the hash of the previous block
+   * @param {*} prevHash the hash of the previous block
+   */
   buildBlock(prevHash) {
     const newBlock = {
       previousHash: prevHash,
@@ -32,6 +38,11 @@ export default class BlockchainService {
     return newBlock;
   }
 
+  /**
+   * Calculates new hashes with the information of the block
+   * @param {*} crypto imported crypto object
+   * @param {*} block the information of a new block
+   */
   buildHash(crypto, block) {
     const information =
       block.previousHash +

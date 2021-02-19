@@ -23,6 +23,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import { ResizableBox } from "react-resizable";
 import CardAnimation from "./CardAnimation";
+import CoinBalanceService from "../../services/CoinBalanceService";
 
 const transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -84,6 +85,7 @@ export default function CardShop() {
   const [pokemon, setPokemon] = useState([]);
   const [packs, setPacks] = useState([]);
   const [packAmount, dispatch] = useReducer(reducer, 0);
+  const coinBalanceService = CoinBalanceService.getInstance();
   let countPacks = 0;
   const pack = packs[countPacks];
 
@@ -121,22 +123,7 @@ export default function CardShop() {
       console.log("Was ist hier " + pack);
     }
   }
-
-  /**
-   * Coins-amount wird gefecht und im State gespeichert
-   */
-  const getCoins = async () =>
-    await axios
-      .get(Endpoints.DOMAIN + Endpoints.COINS, {
-        headers: {
-          token: userCreds.token,
-        },
-      })
-      .then((response) =>
-        setUserCreds({ ...userCreds, coins: response.data.amount })
-      )
-      .catch((error) => console.log(error));
-
+  
   const buyPack = async () => {
     await axios
       .get(
@@ -151,10 +138,12 @@ export default function CardShop() {
           },
         }
       )
-      .then((response) => {
+      .then(async(response) => {
         const cards = response.data.cards;
         setPokemon(cards);
-        getCoins();
+        await coinBalanceService.getCoins(userCreds.token).then((response) => {
+          setUserCreds({...userCreds, coins:response})
+        })
         setOpenPack(true);
       })
       .catch((error) => console.log(error));

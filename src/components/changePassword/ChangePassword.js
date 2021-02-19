@@ -13,7 +13,6 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import axios from "axios";
 import Endpoints from "../../utils/constants/Endpoints";
 import { UserContext } from "../../context/user/UserContext";
 import Exception from "../../utils/constants/Exceptions";
