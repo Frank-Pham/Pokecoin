@@ -5,11 +5,12 @@ import React, { useContext, useEffect, useState } from "react";
 /* eslint-disable import/no-webpack-loader-syntax */
 import DefaultWorker from "worker-loader!../../workers/blockWorker.js";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, CardMedia, Popover } from "@material-ui/core";
+import { Grid, Paper, CardMedia, Popover, Chip } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
 import Endpoints from "../../utils/constants/Endpoints";
 import MiningAnimation from "../../assets/animations/MiningAnimation.gif";
 import useTabVisibility from "../../hooks/tabVisibility/useTabVisibility";
+import { lime,red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -27,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "auto",
     marginRight: "auto",
   },
+
+  tabState: {
+    marginTop: theme.spacing(3),
+  }
 }));
 
 export default function MainPage() {
@@ -63,6 +68,10 @@ export default function MainPage() {
 
   useEffect(() => {
     if (worker && isTabVisible && isMining) worker.postMessage(userCreds.token);
+    else {
+      setMiningButtonText("Start Mining");
+      setIsMining(false);
+    }
   }, [userCreds.coins]);
 
   //###################################################################################
@@ -163,9 +172,17 @@ export default function MainPage() {
             >
               {miningButtonText}
             </Button>
-            <p className="visibility">
-              {isTabVisible ? "Tab offen. Happy Mining :" + isTabVisible : "zu"}
-            </p>
+            <div className={classes.tabState}>
+              <Chip
+                style={{backgroundColor: isTabVisible ? lime["A400"] : red[200]}}
+                label={
+                  isTabVisible
+                    ? "Tab offen. Happy Mining"
+                    : "Tab wurde gewechselt. Mining wurde gestoppt"
+                }
+              />
+            </div>
+
             {/*
             <Popover
               id={id}
