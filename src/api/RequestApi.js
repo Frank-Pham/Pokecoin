@@ -11,15 +11,16 @@ export default class RequestApi {
 
   async getRequest(url, token) {
     return await axios
-      .get(url, token == null ? { headers: { token: token } } : null)
+      .get(url, token == null ? { headers: { token: token } } : {})
       .then((response) => response.data)
       .catch((error) => error.data);
   }
 
   async postRequest(url, body, token) {
-    return await axios
-      .post(url, body, token == null ? { headers: { token: token } } : null)
-      .then((response) => response.data)
-      .catch((error) => error.data);
+    return await axios.post(
+      url,
+      body,
+      token != null ? { headers: { token: token } } : {}
+    );
   }
 }
