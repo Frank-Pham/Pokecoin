@@ -71,7 +71,7 @@ export default function MainPage() {
     setAnchorEl(event.currentTarget);
     setMiningButtonText("Mining...");
     setIsMining(true);
-    worker.postMessage(userCreds.token)
+    worker.postMessage(userCreds.token);
     //collectInfoForBlock();
   };
 
@@ -88,9 +88,7 @@ export default function MainPage() {
 
   async function postOurBlock(postBlock) {
     const response = await postData(
-      Endpoints
-    .DOMAIN + Endpoints
-    .BLOCKS,
+      Endpoints.DOMAIN + Endpoints.BLOCKS,
       postBlock
     ); /*.then(() => {
       fetchCoins();
@@ -138,9 +136,7 @@ export default function MainPage() {
    * Coins-amount wird gefecht und im Sate gespeichert
    */
   async function fetchCoins() {
-    const response = await fetchData(Endpoints
-    .DOMAIN + Endpoints
-    .COINS);
+    const response = await fetchData(Endpoints.DOMAIN + Endpoints.COINS);
     setUserCreds({ ...userCreds, coins: response.amount });
   }
 
@@ -170,7 +166,7 @@ export default function MainPage() {
         },
       })
       .then(
-        (response) => response.data,
+        (response) => response.data
         //setMiningButtonText("Start Mining")
         //handleClose()
       )
@@ -196,7 +192,8 @@ export default function MainPage() {
   return (
     <div>
       <Grid container spacing={3} className={classes.grid}>
-        <Grid item xs={9}>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={10}>
           <Paper className={classes.paper}>
             <Button
               variant="contained"
@@ -233,6 +230,7 @@ export default function MainPage() {
             </Popover>*/}
           </Paper>
         </Grid>
+        <Grid item xs={1}></Grid>
       </Grid>
     </div>
   );
