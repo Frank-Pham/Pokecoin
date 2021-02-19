@@ -1,36 +1,27 @@
 import axios from "axios";
-import Constans from "../utils/constants/Endpoints";
-
+import RequestApi from "../api/RequestApi";
+import Endpoints from "../utils/constants/Endpoints";
 export default class BlockchainService {
   static _blockchainServiceInstance = null;
+
   static getInstance() {
-    if (BlockchainService._blockchainServiceInstance == null) {
+    if (BlockchainService._blockchainServiceInstance == null)
       BlockchainService._blockchainServiceInstance = new BlockchainService();
-    }
     return this._blockchainServiceInstance;
   }
 
-  async fetchDifficulty(token){
-    return await axios
-      .get(Constans.DOMAIN + Constans.DIFFICULTY, {
-        headers: {
-          token: token,
-        },
-      })
-      .then((response) => response.data)
-      .catch((error) => console.log(error));
-  };
+  async getLastBlockHash(token) {
+    return await RequestApi.getInstance()
+      .getRequest(Endpoints.DOMAIN + Endpoints.LASTBLOCK, token)
+      .then((lastBlock) => lastBlock.hash);
+  }
 
-  async fetchLastBlockHash(token){
-    return await axios
-      .get(Constans.DOMAIN + Constans.LASTBLOCK, {
-        headers: {
-          token: token,
-        },
-      })
-      .then((response) => response.data.hash)
-      .catch((error) => console.log(error));
-  };
+  async getDifficulty(token) {
+    return await RequestApi.getInstance().getRequest(
+      Endpoints.DOMAIN + Endpoints.DIFFICULTY,
+      token
+    );
+  }
 
   buildBlock(prevHash) {
     const newBlock = {
@@ -40,5 +31,14 @@ export default class BlockchainService {
       nonce: 0,
     };
     return newBlock;
+  }
+
+  buildHash(crypto, block) {
+    const information =
+      block.previousHash +
+      block.timestamp.toString() +
+      block.data +
+      block.nonce.toString();
+    return crypto.createHash("sha256").update(information).digest("hex");
   }
 }
