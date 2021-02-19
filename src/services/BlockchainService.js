@@ -1,4 +1,3 @@
-import axios from "axios";
 import RequestApi from "../api/RequestApi";
 import Endpoints from "../utils/constants/Endpoints";
 export default class BlockchainService {
