@@ -1,12 +1,13 @@
 import React from "react";
 import { Container, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import Paths from "../../utils/constants/Paths";
 
 export default function Profile() {
   const history = useHistory();
 
   const goToChangePassword = () => {
-    history.push("/changePassword");
+    history.push(Paths.CHANGE_PASSWORD);
   }
 
   return (

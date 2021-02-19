@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { Avatar, CardHeader, CardMedia, IconButton } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { CardContext } from "../context/user/CardContext";
+import Paths from "../utils/constants/Paths";
 
 const useStyles = makeStyles({
   root: {
@@ -36,7 +37,7 @@ export default function PokemonCard({ props }) {
             onClick={() => {
               try {
                 setCardID(props.pokemon.id);
-                history.push(`/cardDetail/${props.pokemon.id}`);
+                history.push(`${Paths.CARD_DETAILS}/${props.pokemon.id}`);
               } catch (e) {
                 alert(e.message);
               }

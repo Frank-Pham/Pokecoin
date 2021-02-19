@@ -20,6 +20,7 @@ import useStyles from "./LoginPageStyles";
 import { useCookies } from "react-cookie";
 import CookieConstants from "../../utils/constants/CookieConstants";
 import useRestCalls from "../../hooks/rest/useRestCalls";
+import Paths from "../../utils/constants/Paths";
 
 export default function LoginPage() {
   const classes = useStyles();
@@ -63,7 +64,7 @@ export default function LoginPage() {
         setCookie(CookieConstants.USER_NAME, data.username);
         setCookie(CookieConstants.TOKEN, token);
 
-        history.push("/main"); //hängt an aktuelle UL drann
+        history.push(Paths.MAIN); //hängt an aktuelle UL drann
       })
       .catch((error) =>
         setError("Loginname and/or password is wrong, please try again!")
@@ -71,7 +72,7 @@ export default function LoginPage() {
   };
 
   const handleClickRegisterLink = async () => {
-    history.push("/register");
+    history.push(Paths.REGISTER);
   };
 
   return (

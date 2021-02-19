@@ -2,12 +2,12 @@ import axios from "axios";
 import Constans from "../utils/constants/Endpoints";
 
 export default class BlockchainService {
-  static blockchainServiceInstance = null;
+  static _blockchainServiceInstance = null;
   static getInstance() {
-    if (BlockchainService.blockchainServiceInstance == null) {
-      BlockchainService.blockchainServiceInstance = new BlockchainService();
+    if (BlockchainService._blockchainServiceInstance == null) {
+      BlockchainService._blockchainServiceInstance = new BlockchainService();
     }
-    return this.blockchainServiceInstance;
+    return this._blockchainServiceInstance;
   }
 
   async fetchDifficulty(token){

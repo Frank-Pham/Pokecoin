@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/user/UserContext";
 import PageNameConstants from "../../utils/constants/PageNameConstants";
 import HomeIcon from "@material-ui/icons/Home";
+import Paths from "../../utils/constants/Paths";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,7 +47,7 @@ export default function Navbar() {
     <div className={classes.root}>
       <AppBar position="sticky">
         <Toolbar>
-          <Button onClick={() => history.push("/main")}>
+          <Button onClick={() => history.push(Paths.MAIN)}>
             <HomeIcon className={classes.homeButton} />
           </Button>
           <Typography className={classes.title}>
@@ -54,7 +55,7 @@ export default function Navbar() {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => history.push("/cardShop")}
+              onClick={() => history.push(Paths.SHOP)}
               className={classes.buttons}
             >
               CardShop
@@ -62,7 +63,7 @@ export default function Navbar() {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => history.push("/cardCollection")}
+              onClick={() => history.push(Paths.COLLECTION)}
               className={classes.buttons}
             >
               Cardcollection
@@ -70,7 +71,7 @@ export default function Navbar() {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => history.push("/cards")}
+              onClick={() => history.push(Paths.CARDS)}
               className={classes.buttons}
             >
               All Cards
@@ -80,7 +81,7 @@ export default function Navbar() {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => history.push("/profile")}
+            onClick={() => history.push(Paths.PROFILE)}
           >
             <AccountCircleIcon />
           </Button>
