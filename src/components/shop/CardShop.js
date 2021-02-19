@@ -13,7 +13,7 @@ import React, { useContext, useEffect, useReducer, useState } from "react";
 import Endpoints from "../../utils/constants/Endpoints";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
-import CardPackage from "../models/CardPackage";
+import CardPackage from "../Pokemoncard/CardPackage";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import ButtonBase from "@material-ui/core/ButtonBase";
