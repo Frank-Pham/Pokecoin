@@ -51,22 +51,7 @@ export default function UserCollection() {
 
     return response.card;
   }
-  /**
-   * fetchen ausgelagert
-   *
-   * @param {*} url
-   */
-  async function fetchData(url) {
-    const response = await axios
-      .get(url, {
-        headers: {
-          token: userCreds.token,
-        },
-      })
-      .then((response) => response.data);
 
-    return response;
-  }
   return (
     <Grid container spacing={3} className={classes.grid}>
       <Grid item xs={12}>

@@ -24,6 +24,7 @@ import Button from "@material-ui/core/Button";
 import { ResizableBox } from "react-resizable";
 import CardAnimation from "./CardAnimation";
 import CoinBalanceService from "../../services/CoinBalanceService";
+import RequestApi from "../../api/RequestApi";
 
 const transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -86,6 +87,7 @@ export default function CardShop() {
   const [packs, setPacks] = useState([]);
   const [packAmount, dispatch] = useReducer(reducer, 0);
   const coinBalanceService = CoinBalanceService.getInstance();
+  const requestApi = RequestApi.getInstance();
   let countPacks = 0;
   const pack = packs[countPacks];
 
