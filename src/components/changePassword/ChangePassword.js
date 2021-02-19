@@ -10,12 +10,14 @@ import {
   IconButton,
   makeStyles,
   Button,
+  FormHelperText,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import axios from "axios";
 import Endpoints from "../../utils/constants/Endpoints";
 import { UserContext } from "../../context/user/UserContext";
 import Exception from "../../utils/constants/Exceptions";
+import RequestApi from "../../api/RequestApi";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +56,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const HelperText = (props) => {
+  if (props.isInvalid) {
+    return (
+      <FormHelperText error={props.isInvalid} filled={true}>
+        {props.errorMessage}
+      </FormHelperText>
+    );
+  } else {
+    return <FormHelperText>{props.successMessage}</FormHelperText>;
+  }
+};
+
 export default function ChangePassword() {
   const classes = useStyles();
   const url = Endpoints.DOMAIN + Endpoints.CHANGE_PASSWORD;
@@ -63,37 +77,46 @@ export default function ChangePassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const requestApi = RequestApi.getInstance();
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const changePassword = async () =>
-    await axios
-      .post(
+  const changePassword = async () => {
+    if (newPassword == "") {
+      setIsInvalid(true);
+      setErrorMessage("Neues Password darf nicht leer sein!");
+
+      return;
+    }
+
+    requestApi
+      .postRequest(
         url,
         {
           password: oldPassword,
           newPassword: newPassword,
         },
-        {
-          headers: {
-            token: userCreds.token,
-          },
-        }
+        userCreds.token
       )
-      .then((response) => console.log(response.data))
+      .then(
+        () => setErrorMessage(""),
+        setIsInvalid(false),
+        setSuccessMessage("Password erfolgreich geändert!")
+      )
       .catch(function (error) {
         const errorJson = error.response.data;
         console.log(errorJson);
         setIsInvalid(true);
         setErrorMessage(
           errorJson.code.includes(Exception.PASSWORD_INCORRECT)
-            ? errorJson.text
+            ? errorJson.message
             : ""
         );
       });
-
+  };
   return (
     <Container maxWIdth="sm" className={classes.root}>
       <Paper className={classes.paper}>
@@ -109,7 +132,7 @@ export default function ChangePassword() {
               type={showPassword ? "text" : "password"}
               value={oldPassword}
               onChange={(event) => setOldPassword(event.target.value)}
-              helperText={errorMessage === "" ? "" : errorMessage}
+              helperText={errorMessage}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -147,6 +170,11 @@ export default function ChangePassword() {
               labelWidth={70}
             />
           </FormControl>
+          <HelperText
+            isInvalid={isInvalid}
+            errorMessage={errorMessage}
+            successMessage={successMessage}
+          />
           <Button
             variant="contained"
             className={classes.button}
