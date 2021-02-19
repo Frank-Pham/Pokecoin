@@ -4,45 +4,30 @@ import TextField from "@material-ui/core/TextField";
 import useStyles from "./RegisterPageStyles";
 import { Button, Grid } from "@material-ui/core";
 import Endpoints from "../../utils/constants/Endpoints";
-import axios from "axios";
+import RequestApi from "../../api/RequestApi";
 
 export default function RegisterPage() {
+  const requestApi = RequestApi.getInstance();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {}, [error]);
-
   const register = async () => {
-    if (userName === "" || password === "") {
-      if (userName === "") {
-        setError("Please select a username!");
-      }
-      if (password === "") {
-        setError("Please select a password!");
-      }
-      if (userName === "" && password === "") {
-        setError("Please enter a username AND password!");
-      }
-    } else {
-      const data = {
-        username: userName,
-        password: password,
-      };
-      console.log(data);
-      await axios
-        .post(Endpoints.DOMAIN + Endpoints.REGISTER, {
-          username: data.username,
-          password: data.password,
-        })
-        .then(function (response) {
-          console.log(response);
-          setError("");
-        })
-        .catch((error) => setError("This username is already in use"));
-
-      console.log("Errormsg", error);
-    }
+    const data = {
+      username: userName,
+      password: password,
+    };
+    console.log(data);
+    await requestApi
+      .postRequest(Endpoints.DOMAIN + Endpoints.REGISTER, {
+        username: data.username,
+        password: data.password,
+      })
+      .then(function (response) {
+        console.log(response);
+        setError("");
+      })
+      .catch((error) => setError(error.response.data.message));
   };
 
   return (
