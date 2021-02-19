@@ -68,23 +68,16 @@ export default function MainPage() {
   //###################################################################################
 
   const mineCoins = (event) => {
-    setAnchorEl(event.currentTarget);
-    setMiningButtonText("Mining...");
-    setIsMining(true);
-    worker.postMessage(userCreds.token);
-    //collectInfoForBlock();
+    if (isMining == false) {
+      setAnchorEl(event.currentTarget);
+      setMiningButtonText("Mining...");
+      setIsMining(true);
+      worker.postMessage(userCreds.token);
+    } else {
+      setIsMining(false);
+      setMiningButtonText("Start Mining");
+    }
   };
-
-  /*Ausgelagert
-  function buildBlock(prevHash) {
-    const newBlock = {
-      previousHash: prevHash,
-      data: "",
-      timestamp: Date.now(),
-      nonce: 0,
-    };
-    return newBlock;
-  }*/
 
   async function postOurBlock(postBlock) {
     const response = await postData(
@@ -112,26 +105,6 @@ export default function MainPage() {
       tempWorker.terminate();
     };
   }
-
-  /** Wurde in useffect gesteckt da der worker hier immer undefined war
-  async function collectInfoForBlock() {
-    // Letzten Block holen und hash rausziehen
-    await fetchDifficulty();
-    const lastBlock = await fetchData(
-      Endpoints
-    .DOMAIN + Endpoints
-    .LASTBLOCK
-    );
-    const prevBlockHash = lastBlock.hash;
-    //neuen Block bauen mit hash als prevHash
-    const newBlock = buildBlock(prevBlockHash);
-    //Block wird zum minen dem blockWorker übergeben
-    const workerEvent = { block: { ...newBlock }, difficulty: difficulty };
-    //worker.postMessage(workerEvent);
-    console.log("worker", worker, userCreds.token);
-    worker.postMessage(userCreds.token);
-  }*/
-
   /**
    * Coins-amount wird gefecht und im Sate gespeichert
    */
@@ -139,19 +112,6 @@ export default function MainPage() {
     const response = await fetchData(Endpoints.DOMAIN + Endpoints.COINS);
     setUserCreds({ ...userCreds, coins: response.amount });
   }
-
-  /* Ausgelagert
-  async function fetchDifficulty() {
-    const response = await fetchData(
-      Endpoints
-    .DOMAIN + Endpoints
-    .DIFFICULTY
-    );
-    setDifficulty(response);
-    console.log("response nach dem Fetch", response);
-    console.log("difficulty" + difficulty);
-  }*/
-
   /**
    * Könnte man auslagern in einer fetchApi
    * Posten einen Blocks ausgelagert
@@ -167,11 +127,11 @@ export default function MainPage() {
       })
       .then(
         (response) => response.data
-        //setMiningButtonText("Start Mining")
         //handleClose()
       )
       .catch(function (error) {
         console.log("Mining Error: " + error);
+        setIsMining(false);
         setMiningButtonText("Start Mining");
       });
     return response;
