@@ -10,6 +10,7 @@ import {
   TextField,
   Link,
   FormControl,
+  FormHelperText
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import Endpoints from "../../utils/constants/Endpoints";
@@ -46,7 +47,7 @@ export default function LoginPage() {
         null
       )
       .then((response) => {
-        const token = response.token;
+        const token = response.data.token;
         setUserCreds({
           username: userName,
           token: token,
@@ -58,45 +59,8 @@ export default function LoginPage() {
         history.push(Paths.MAIN); //hängt an aktuelle UL drann
       })
       .catch((error) =>
-        setError("Loginname and/or password is wrong, please try again!")
+        setError(error.response.data.message)
       );
-
-      /*
-  const login2 = async () => {
-    console.log(userName, password);
-    const data = {
-      username: userName,
-      password: password,
-      valid: "",
-    };
-    console.log(data);
-    await axios
-      .post(Endpoints.DOMAIN + Endpoints.LOGIN, {
-        username: data.username,
-        password: data.password,
-      })
-      .then(function (response) {
-        console.log(response.data);
-        const token = response.data.token;
-        setUserCreds({
-          username: data.username,
-          token: token,
-          coins: getCoins(token).data,
-        });
-        console.log(data.username);
-        console.log(userCreds);
-
-        // save data to cookies
-        setCookie(CookieConstants.USER_NAME, data.username);
-        setCookie(CookieConstants.TOKEN, token);
-
-        history.push(Paths.MAIN); //hängt an aktuelle UL drann
-      })
-      .catch((error) =>
-        setError("Loginname and/or password is wrong, please try again!")
-      );
-  };
-  */
 
   const handleClickRegisterLink = async () => {
     history.push(Paths.REGISTER);
@@ -177,7 +141,7 @@ export default function LoginPage() {
             Registrieren
           </Link>
         </Grid>
-        <p color="red">{error}</p>
+        <FormHelperText error={error == "" ? false:true} filled={true}>{error}</FormHelperText>
       </Grid>
     </Grid>
   );
