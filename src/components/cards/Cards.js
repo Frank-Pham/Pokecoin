@@ -3,6 +3,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import { UserContext } from "../../context/user/UserContext";
 import Endpoints from "../../utils/constants/Endpoints";
 import PokemonList from "../models/PokemonList";
+import RequestApi from "../../api/RequestApi";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Cards() {
+  const requestApi = RequestApi.getInstance();
   const { userCreds } = useContext(UserContext);
   const [cards, setCards] = useState([]);
   const classes = useStyles();
@@ -26,25 +28,8 @@ export default function Cards() {
   }, []);
 
   async function fetchCards() {
-    const response = await fetchData(Endpoints.DOMAIN + Endpoints.CARDS);
-
+    const response = await requestApi.getRequest(Endpoints.DOMAIN + Endpoints.CARDS, userCreds.token);
     setCards(response.cards);
-  }
-  /**
-   * fetchen ausgelagert
-   *
-   * @param {*} url
-   */
-  async function fetchData(url) {
-    const response = await axios
-      .get(url, {
-        headers: {
-          token: userCreds.token,
-        },
-      })
-      .then((response) => response.data);
-
-    return response;
   }
 
   return (

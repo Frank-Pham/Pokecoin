@@ -1,9 +1,9 @@
 import { Card, CardContent, makeStyles } from "@material-ui/core";
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { CardContext } from "../../context/user/CardContext";
 import { UserContext } from "../../context/user/UserContext";
 import Endpoints from "../../utils/constants/Endpoints";
+import RequestApi from "../../api/RequestApi";
 
 const useStyles = makeStyles({
   root: {
@@ -15,6 +15,7 @@ const useStyles = makeStyles({
 });
 
 export default function CardDetails() {
+  const requestApi = RequestApi.getInstance();
   const { cardID } = useContext(CardContext);
   const { userCreds } = useContext(UserContext);
   const [card, setCard] = useState("");
@@ -31,29 +32,11 @@ export default function CardDetails() {
    */
 
   async function fetchCardDetails(cardID) {
-    const response = await fetchData(
-      Endpoints.DOMAIN + Endpoints.CARDS + "/" + cardID
+    const response = await requestApi.getRequest(
+      Endpoints.DOMAIN + Endpoints.CARDS + "/" + cardID, userCreds.token
     );
     setCard(response.card);
     return response.card;
-  }
-
-  /**
-   * Kriegt die URL mitgegeben und fetch
-   * die Datan der jeweiligen URL
-   *
-   * @param {*} url
-   */
-  async function fetchData(url) {
-    const response = await axios
-      .get(url, {
-        headers: {
-          token: userCreds.token,
-        },
-      })
-      .then((response) => response.data);
-
-    return response;
   }
 
   return (

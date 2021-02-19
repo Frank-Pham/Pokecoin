@@ -14,7 +14,6 @@ import Endpoints from "../../utils/constants/Endpoints";
 import { UserContext } from "../../context/user/UserContext";
 import axios from "axios";
 import CardPackage from "../models/CardPackage";
-import CardPack from "../../assets/images/CardBack.jpg";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -99,12 +98,9 @@ export default function CardShop() {
   }, []);
 
   async function fetchPackages() {
-    const packArray = await fetchData(Endpoints.DOMAIN + Endpoints.PACKAGES);
-    const packIndex = JSON.stringify(packArray);
+    const packArray = await requestApi.getRequest(Endpoints.DOMAIN + Endpoints.PACKAGES, userCreds.token);
 
     for (const pack of packArray) {
-      console.log("Pack " + countPacks + ": " + pack);
-      console.log("Packlänge: " + JSON.stringify(packArray[countPacks]));
       if (packArray.length > 1) {
         countPacks++;
         let howManyPacks = packArray.length;
@@ -113,12 +109,9 @@ export default function CardShop() {
         }
       }
     }
-
     setPacks((packs) => Array.from(packArray));
-    console.log("Die Pack-Auswahl: " + packIndex);
-    console.log("Alle Packs: " + packs);
     for (const pack of packs) {
-      console.log("Was ist hier " + pack);
+      console.log("Was ist hier für ein pack: " + pack);
     }
   }
 
@@ -149,32 +142,6 @@ export default function CardShop() {
 
   const closePack = () => {
     setOpenPack(false);
-  };
-  const testBuy = () => {
-    setOpenPack(true);
-  };
-
-  const showPull = () =>
-    openPack === true ? <h1>Dein Gekauftes Pack!</h1> : "";
-
-  /**
-   * fetchen ausgelagert
-   *
-   * @param {*} url
-   */
-  async function fetchData(url) {
-    const response = await axios
-      .get(url, {
-        headers: {
-          token: userCreds.token,
-        },
-      })
-      .then((response) => response.data);
-    return response;
-  }
-
-  const testClick = () => {
-    console.log("HAllo!");
   };
 
   return (
@@ -223,9 +190,7 @@ export default function CardShop() {
                 {"Pack Cards"}
               </DialogTitle>
               <DialogContent>
-                {/* <PokemonList
-              props={{ cards: pokemon, details: null }}
-            ></PokemonList> */}
+
                 <CardAnimation props={{ cards: pokemon }}></CardAnimation>
                 {console.log(pokemon)}
               </DialogContent>
