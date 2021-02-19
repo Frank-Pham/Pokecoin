@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { useHistory } from "react-router-dom";
-import { CardContext } from "../context/user/CardContext";
-import Paths from "../utils/constants/Paths";
+import { CardContext } from "../../context/user/CardContext";
+import Paths from "../../utils/constants/Paths";
 
 const useStyles = makeStyles({
   root: {
