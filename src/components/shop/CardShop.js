@@ -5,8 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Card,
-  CardContent,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext, useEffect, useReducer, useState } from "react";
@@ -84,7 +82,7 @@ export default function CardShop() {
   const [pokemon, setPokemon] = useState([]);
   const [packs, setPacks] = useState([]);
   const [packAmount, dispatch] = useReducer(reducer, 0);
-  let countPacks= 0;
+  let countPacks = 0;
   const pack = packs[countPacks];
 
   const basePack = new CardPackage(pack, 5, [], 1, 10);
@@ -99,31 +97,26 @@ export default function CardShop() {
   }, [pokemon]);
 
   async function fetchPackages() {
-
-    const packArray = await fetchData(
-      Endpoints.DOMAIN + Endpoints.PACKAGES
-    );
+    const packArray = await fetchData(Endpoints.DOMAIN + Endpoints.PACKAGES);
     const packIndex = JSON.stringify(packArray);
 
-    for (const pack of packArray){
-      console.log("Pack "+countPacks+ ": "+ pack);
-      console.log("Packlänge: "+ JSON.stringify(packArray[countPacks]));
-      if(packArray.length > 1){
+    for (const pack of packArray) {
+      console.log("Pack " + countPacks + ": " + pack);
+      console.log("Packlänge: " + JSON.stringify(packArray[countPacks]));
+      if (packArray.length > 1) {
         countPacks++;
-        let howManyPacks= packArray.length;
-        while(countPacks< howManyPacks){
+        let howManyPacks = packArray.length;
+        while (countPacks < howManyPacks) {
           setPacks((packs) => JSON.stringify(packArray[countPacks]));
         }
       }
-
     }
 
     setPacks((packs) => Array.from(packArray));
     console.log("Die Pack-Auswahl: " + packIndex);
     console.log("Alle Packs: " + packs);
     for (const pack of packs) {
-      console.log("Was ist hier "+pack);
-
+      console.log("Was ist hier " + pack);
     }
   }
 
@@ -147,7 +140,8 @@ export default function CardShop() {
       .get(
         Endpoints.DOMAIN +
           Endpoints.PACKAGES +
-          "/" + pack +
+          "/" +
+          pack +
           Endpoints.DEFAULT_PACK,
         {
           headers: {
@@ -167,12 +161,6 @@ export default function CardShop() {
   const closePack = () => {
     setOpenPack(false);
   };
-  const testBuy = () => {
-    setOpenPack(true);
-  };
-
-  const showPull = () =>
-    openPack === true ? <h1>Dein Gekauftes Pack!</h1> : "";
 
   /**
    * fetchen ausgelagert
@@ -197,72 +185,64 @@ export default function CardShop() {
   return (
     <Grid container direction="column" justify="center" alignItems="center">
       {packs.map((packName) => (
-      <>
+        <>
+          <h1>{packName} Packung</h1>
 
-
-      <h1>{packName} Packung</h1>
-
-      <img
-        className={classes.img}
-        alt="complex"
-        src={CardPack}
-        onClick={() => {
-          testClick();
-        }}
-      />
-
-      <ButtonBase className={classes.image}>
-        <img className={classes.img} alt="complex" src={PokemonPack} />
-      </ButtonBase>
-      <div>
-        <ButtonGroup color="primary" aria-label="outlined primary button group">
-          <Button
-            onClick={() =>
-              packAmount > 0
-                ? dispatch({ type: "decrement" })
-                : console.log("Anzahl der Packs ist auf 0!")
-            }
-          >
-            <RemoveCircleIcon />
+          <ButtonBase className={classes.image}>
+            <img className={classes.img} alt="complex" src={PokemonPack} />
+          </ButtonBase>
+          <div>
+            <ButtonGroup
+              color="primary"
+              aria-label="outlined primary button group"
+            >
+              <Button
+                onClick={() =>
+                  packAmount > 0
+                    ? dispatch({ type: "decrement" })
+                    : console.log("Anzahl der Packs ist auf 0!")
+                }
+              >
+                <RemoveCircleIcon />
+              </Button>
+              <Button disabled>{packAmount}</Button>
+              <Button onClick={() => dispatch({ type: "increment" })}>
+                <AddCircleIcon />
+              </Button>
+            </ButtonGroup>
+          </div>
+          <Button variant="contained" color="primary" onClick={buyPack}>
+            Kaufen
           </Button>
-          <Button disabled>{packAmount}</Button>
-          <Button onClick={() => dispatch({ type: "increment" })}>
-            <AddCircleIcon />
-          </Button>
-        </ButtonGroup>
-      </div>
-      <Button variant="contained" color="primary" onClick={buyPack}>
-        Kaufen
-      </Button>
 
-      <ResizableBox height={400} width={1200} className={classes.resizable}>
-        <Dialog
-          open={openPack}
-          TransitionComponent={transition}
-          keepMounted
-          onClose={closePack}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle id="alert-dialog-slide-title">
-            {"Pack Cards"}
-          </DialogTitle>
-          <DialogContent>
-            {/* <PokemonList
+          <ResizableBox height={400} width={1200} className={classes.resizable}>
+            <Dialog
+              open={openPack}
+              TransitionComponent={transition}
+              keepMounted
+              onClose={closePack}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle id="alert-dialog-slide-title">
+                {"Pack Cards"}
+              </DialogTitle>
+              <DialogContent>
+                {/* <PokemonList
               props={{ cards: pokemon, details: null }}
             ></PokemonList> */}
-            <CardAnimation props={{ cards: pokemon }}></CardAnimation>
-            {console.log(pokemon)}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closePack} color="primary">
-              Close and accept Pack
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </ResizableBox>
-      </>
-        ))}
+                <CardAnimation props={{ cards: pokemon }}></CardAnimation>
+                {console.log(pokemon)}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={closePack} color="primary">
+                  Close and accept Pack
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </ResizableBox>
+        </>
+      ))}
     </Grid>
   );
 }
