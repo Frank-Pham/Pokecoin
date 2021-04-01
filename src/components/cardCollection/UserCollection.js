@@ -22,9 +22,7 @@ export default function UserCollection() {
   const [userCards, setUserCards] = useState([]);
   const classes = useStyles();
 
-  useEffect(() => {
-    fetchUserCollection();
-  }, []);
+  useEffect(fetchUserCollection, []);
 
   async function fetchUserCollection() {
     const response = await requestApi.getRequest(

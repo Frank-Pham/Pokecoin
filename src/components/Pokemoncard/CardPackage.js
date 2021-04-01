@@ -10,11 +10,10 @@ export default class CardPackage {
     this.cost = cost;
   }
 
-
   async fetchCards(token) {
     const cardUrl = Endpoints.DOMAIN + Endpoints.CARDS;
 
-    const cards = await axios
+    await axios
       .get(cardUrl, {
         headers: {
           token: token,
@@ -24,6 +23,5 @@ export default class CardPackage {
       .catch((error) => {
         console.log(error);
       });
-
   }
 }
