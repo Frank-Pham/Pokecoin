@@ -1,3 +1,5 @@
+Server side(from lecturer): https://github.com/bykof/pokecoin-server
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
