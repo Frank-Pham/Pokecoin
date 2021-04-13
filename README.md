@@ -1,7 +1,7 @@
 # Info
 
-Group project: Blockchain miner for a Web-engineering class.
-Server side(from lecturer):\
+Group project: Blockchain miner for a Web-engineering class. Implemented frontend/client side with React.\
+Server side provided from lecturer:\
 https://github.com/bykof/pokecoin-server
 
 ![gif](https://github.com/Frank-Pham/Pokecoin/blob/master/src/assets/animations/MiningAnimation.gif)
